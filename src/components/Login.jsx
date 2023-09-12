@@ -1,5 +1,4 @@
 import "../App.css"
-import { works } from "../index.js"
 
 
 

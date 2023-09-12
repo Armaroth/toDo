@@ -1,46 +1,51 @@
-import "../App.css"
-import { useState } from "react"
-
-
+import { useEffect, useState } from "react";
+import './dashboard.css'
 
 export function Dashboard() {
 
-
     const [username, setUsername] = useState("")
-    async function onSubmitForm(e){
+    const [users, setUsers] = useState([])
+
+    useEffect(() => {
+        async function handleData() {
+            const data = await fetch('http://localhost:4000');
+            const result = await data.json();
+            setUsers(result);
+        }
+
+        handleData();
+
+    })
+
+    async function onSubmitForm(e) {
         e.preventDefault();
-        const response = await fetch('http://localhost:4000',{
+        const response = await fetch('http://localhost:4000', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({username})});
+            body: JSON.stringify({ username })
+        });
+        setUsername('')
     }
-
-    // async function get(){
-    //    const text = await fetch('http://localhost:4000');
-    //    const username = await text.json();
-    //    setUsername(username)
-    // }
-
-    // async function post(state){
-    //     const res = await fetch('http://localhost:4000',{
-    //         method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({state})})
-    //         console.log(res)
-    // }
 
     return (
         <>
+            <div className="mt-5 container" id="inputTodo">
+                <h1 className="text-center">ToDO list</h1>
+                <form className="d-flex mt-5" action="/" onSubmit={onSubmitForm}>
+                    <input className="form-control" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <button className="btn btn-primary" >Add</button>
+                </form>
 
-            <form id="todo" action="/" onSubmit={onSubmitForm}>
-                <h1>ToDO list</h1>
-                <input value={username} onChange={(e) => setUsername(e.target.value)} />
-                <button >Add</button>
-            </form>
+            </div>
+            <div className="showToDo container mt-5">
+
+                <div>
+                    {users.map(user => <p key={users.indexOf(user)}>{user}</p>)}
+                </div>
+
+            </div>
         </>
     )
 }
