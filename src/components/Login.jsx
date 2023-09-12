@@ -3,7 +3,6 @@ import "../App.css"
 
 
 export function Login() {
-    works();
 
 
     return (
