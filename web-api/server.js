@@ -21,7 +21,7 @@ app.get("/",async(req, res)=>{
 })
 
 app.post("/", async(req, res)=>{
-    users.push(req.body.username);
+    users.push(req.body.inputValue);
     res.json(`user signed up`);
     console.log(users);
 })
