@@ -33,8 +33,9 @@ app.post("/", async (req, res) => {
     try {
         const query = ` INSERT INTO todo (description) VALUES ($1);`
         const { value } = req.body;
-        await pool.query(query, [value]);
-        res.sendStatus(200);
+        const result = await pool.query(query, [value]);
+        return res.send(result);
+
 
     } catch (error) {
         console.error(error)
@@ -46,7 +47,7 @@ app.put('/', async (req, res) => {
         const { description, id } = req.body;
         const query = 'UPDATE todo SET description = $1 WHERE todo_id = $2 ;'
         await pool.query(query, [description, id]);
-        res.json('Todo was updated.');
+        return res.json('Todo was updated.');
     }
 
     catch (error) {

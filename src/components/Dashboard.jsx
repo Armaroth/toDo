@@ -1,18 +1,32 @@
 import { TodoList } from "./TodoList";
 import { Input } from "./Input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 export function Dashboard() {
 
-    const [render, setRender] = useState(false);
-    function trigger() { setRender(() => !render) }
+    const [toDos, setToDos] = useState([]);
+
+    const [value, setValue] = useState('');
+
+    async function handleData() {
+        const data = await fetch('http://localhost:4000/');
+        const result = await data.json();
+        setToDos(() => result)
+    }
+
+    useEffect(() => {
+        handleData();
+    }, [])
+
+
+
 
 
     return (
         <>
-            <Input setRender={trigger} />
-            <TodoList setRender={trigger} render={render} />
+            <Input handleData={handleData} />
+            <TodoList handleData={handleData} toDos={toDos} />
         </>
     )
 }

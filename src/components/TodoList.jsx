@@ -1,34 +1,25 @@
 import { useEffect, useState } from "react";
 import './dashboard.css';
 
-export function TodoList({ render, setRender }) {
+export function TodoList({ toDos, handleData }) {
 
-    const [toDos, setToDos] = useState([]);
     const [description, setDescription] = useState('');
 
-    async function handleData() {
-        const data = await fetch('http://localhost:4000/');
-        const result = await data.json();
-        setToDos(() => result);
-    }
-    useEffect(() => {
-        handleData();
-    }, [render])
 
-
-    function onClickEdit(description, id) {
+    async function onClickEdit(description, id) {
         if (!description) {
             return
         }
 
-        const response = fetch(`http://localhost:4000/`, {
+        const response = await fetch(`http://localhost:4000/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ description, id })
         })
-        setRender();
+        handleData();
+        setDescription('');
     }
 
     return (

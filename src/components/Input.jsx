@@ -1,15 +1,17 @@
 import { useState } from "react"
 import './dashboard.css';
 
-export function Input({ setRender }) {
+export function Input({ handleData }) {
+
     const [value, setValue] = useState('');
-    function onSubmitForm(e) {
+
+    async function onSubmitForm(e) {
         e.preventDefault();
         if (!value) {
             return
         }
 
-        const response = fetch('http://localhost:4000', {
+        const response = await fetch('http://localhost:4000', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -17,7 +19,8 @@ export function Input({ setRender }) {
             body: JSON.stringify({ value })
         });
         setValue('');
-        setRender();
+        handleData();
+
     }
 
     return (
