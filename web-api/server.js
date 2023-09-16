@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require('cors');
 const app = express();
 require('dotenv').config();
-const { pool, doQuery } = require('./db/db.js')
+const { pool } = require('./db/db.js')
 
 
 app.use(cors());
@@ -17,18 +17,50 @@ const users = []
 app.listen(port, () => console.log(`listening on port:${port}`));
 
 app.get("/", async (req, res) => {
-    const query = `SELECT * FROM todo;`
-    const result = await pool.query(query);
-    console.log(result)
-    if (result.rows !== 0) {
-        res.json(result.rows);
-    }
 
+    try {
+        const query = `SELECT * FROM todo;`
+        const result = await pool.query(query);
+        if (result.rows !== 0) {
+            return res.json(result.rows);
+        }
+
+    } catch (error) {
+        console.error(error)
+    }
+})
+app.post("/", async (req, res) => {
+    try {
+        const query = ` INSERT INTO todo (description) VALUES ($1);`
+        const { value } = req.body;
+        await pool.query(query, [value]);
+        res.sendStatus(200);
+
+    } catch (error) {
+        console.error(error)
+    }
 })
 
-app.post("/", async (req, res) => {
-    const query = ` INSERT INTO todo (description) VALUES ($1)`
-    const description = req.body.inputValue;
-    await pool.query(query, [description]);
-    console.log('done')
+app.put('/', async (req, res) => {
+    try {
+        const { description, id } = req.body;
+        const query = 'UPDATE todo SET description = $1 WHERE todo_id = $2 ;'
+        await pool.query(query, [description, id]);
+        res.json('Todo was updated.');
+    }
+
+    catch (error) {
+        console.error(error)
+    }
+})
+
+app.delete('/:id', async (req, res) => {
+    try {
+
+    }
+
+    catch (error) {
+        console.error(error)
+    }
+
 })
