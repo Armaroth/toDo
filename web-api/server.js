@@ -55,8 +55,12 @@ app.put('/', async (req, res) => {
     }
 })
 
-app.delete('/:id', async (req, res) => {
+app.delete('/', async (req, res) => {
     try {
+        const { id } = req.body;
+        const query = 'DELETE FROM todo WHERE todo_id= $1;'
+        await pool.query(query, [id]);
+        return res.json('Todo was deleted.');
 
     }
 

@@ -6,8 +6,8 @@ export function TodoList({ toDos, handleData }) {
     const [description, setDescription] = useState('');
 
 
-    async function onClickEdit(description, id) {
-        if (!description) {
+    async function onClickEdit(description, id, value) {
+        if (!description || description === value) {
             return
         }
 
@@ -20,6 +20,17 @@ export function TodoList({ toDos, handleData }) {
         })
         handleData();
         setDescription('');
+    }
+    async function onClickDelete(id) {
+
+        const response = await fetch(`http://localhost:4000/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id })
+        })
+        handleData();
     }
 
     return (
@@ -45,14 +56,14 @@ export function TodoList({ toDos, handleData }) {
                                                 <input className="form-control" value={description} onChange={e => setDescription(e.target.value)} type="text" />
                                             </div>
                                             <div className="modal-footer">
-                                                <button type="button" className="btn btn-warning" data-bs-dismiss="modal" onClick={() => onClickEdit(description, toDo.todo_id)}>Edit</button>
+                                                <button type="button" className="btn btn-warning" data-bs-dismiss="modal" onClick={() => onClickEdit(description, toDo.todo_id, toDo.description)}>Edit</button>
                                                 <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Close</button>
 
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <button className="btn btn-danger d-inline-block ms-1">Delete</button>
+                                <button className="btn btn-danger d-inline-block ms-1" onClick={() => onClickDelete(toDo.todo_id)}>Delete</button>
                             </div>
                         </li>) : <li className="list-group-item">ToDo list empty</li>}
 
