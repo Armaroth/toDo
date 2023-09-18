@@ -2,10 +2,10 @@ const express = require("express");
 const cors = require('cors');
 const app = express();
 require('dotenv').config();
-const { pool, initDb } = require('./db/db.js');
+const { pool } = require('./db/db.js');
 
 
-(async function () { await initDb(); })();
+// (async function () { await initDb() })();
 
 app.use(cors());
 app.use(express.json());
