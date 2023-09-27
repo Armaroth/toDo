@@ -11,7 +11,7 @@ export function Input({ handleData }) {
             return
         }
 
-        const response = await fetch('http://localhost:4000', {
+        const response = await fetch('http://localhost:4000/user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

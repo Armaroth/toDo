@@ -7,8 +7,9 @@ export function Dashboard() {
 
     const [toDos, setToDos] = useState([]);
 
+
     async function handleData() {
-        const data = await fetch('http://localhost:4000/');
+        const data = await fetch('http://localhost:4000/user');
         const result = await data.json();
         setToDos(() => result)
     }

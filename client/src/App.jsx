@@ -3,9 +3,10 @@ import { Register } from './components/Register'
 import './App.css'
 import { Dashboard } from "./components/Dashboard"
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { useState } from "react"
 
 function App() {
-
+  const [user, setUser] = useState(false)
 
   return (
     <>
