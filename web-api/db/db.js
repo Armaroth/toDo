@@ -8,11 +8,17 @@ const pool = new Pool({
     database: 'stefos'
 })
 
-async function doQuery(query, args) {
-    await pool.query(query, ...args)
+async function runQuery(query, args) {
+    try {
+        await pool.query(query, args)
+    } catch (error) {
+        console.error(error)
+    }
 }
 
-module.exports = { pool, doQuery };
+
+
+module.exports = { pool, runQuery };
 // Unable to connect to server:connection failed: Connection refused
 // 	Is the server running on that host and accepting TCP/IP connections?
 // connection to server at "localhost" (::1), port 5432 failed: Address not available

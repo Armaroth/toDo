@@ -8,7 +8,7 @@ userRouter.route("/")
     .get(async (req, res) => {
 
         try {
-            const query = `SELECT * FROM todo;`
+            const query = `SELECT * FROM todos ;`
             const result = await pool.query(query);
             if (result.rows !== 0) {
                 return res.json(result.rows);
@@ -20,7 +20,7 @@ userRouter.route("/")
     })
     .post(async (req, res) => {
         try {
-            const query = ` INSERT INTO todo (description) VALUES ($1);`
+            const query = ` INSERT INTO todos (description) VALUES ($1);`
             const { value } = req.body;
             const result = await pool.query(query, [value]);
             return res.send(result);
@@ -33,7 +33,7 @@ userRouter.route("/")
     .put(async (req, res) => {
         try {
             const { description, id } = req.body;
-            const query = 'UPDATE todo SET description = $1 WHERE todo_id = $2 ;'
+            const query = 'UPDATE todos SET description = $1 WHERE todo_id = $2 ;'
             await pool.query(query, [description, id]);
             return res.json('Todo was updated.');
         }
@@ -45,7 +45,7 @@ userRouter.route("/")
     .delete(async (req, res) => {
         try {
             const { id } = req.body;
-            const query = 'DELETE FROM todo WHERE todo_id = $1 ;'
+            const query = 'DELETE FROM todos WHERE todo_id = $1 ;'
             await pool.query(query, [id]);
             return res.json('Todo was deleted.');
         }

@@ -2,12 +2,19 @@ const express = require('express');
 const { pool } = require('../db/db.js');
 const bcrypt = require('bcrypt');
 const authRouter = express.Router();
+const initialize = require('../passport-config.js');
+const passport = require('passport');
+
 require('dotenv').config();
+
+initialize(passport);
 
 
 
 authRouter.post('/login', (req, res) => {
-    res.send('ok');
+    const { email, password } = req.body;
+    if (!email || !password) return res.sendStatus(400);
+
 
 })
 
