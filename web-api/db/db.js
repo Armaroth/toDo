@@ -10,7 +10,8 @@ const pool = new Pool({
 
 async function runQuery(query, args) {
     try {
-        await pool.query(query, args)
+        res = await pool.query(query, args)
+        return { data: res }
     } catch (error) {
         console.error(error)
     }

@@ -12,7 +12,7 @@ export function Register() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        { email, username, password }
+
         const response = await fetch(`http://localhost:4000/auth/register`, {
             method: 'POST',
             headers: {

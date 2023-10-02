@@ -9,9 +9,16 @@ export function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
-        console.log(email, ' ', password);
+        const response = await fetch(`http://localhost:4000/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        })
+        console.log('works', response);
     }
 
     return (
@@ -30,7 +37,7 @@ export function Login() {
                             name="password" placeholder="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
                     </div>
                     <div>
-                        <button className="btn btn-success" type="submit" className="btn btn-primary"
+                        <button type="submit" className="btn btn-primary"
                         > Login</button>
                     </div>
 

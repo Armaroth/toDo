@@ -1,3 +1,5 @@
+
+
 const LocalStrategy = require('passport-local').Strategy;
 const verifyUser = require('./db/user.store');
 function initialize(passport) {
@@ -8,7 +10,7 @@ function initialize(passport) {
     return done(null, result);
 
   }
-  passport.use(new LocalStrategy(authenticate))
+  passport.use(new LocalStrategy({ usernameField: 'email' }, authenticate))
 }
 
 
