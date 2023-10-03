@@ -18,8 +18,10 @@ export function Login() {
             },
             body: JSON.stringify({ email, password })
         })
-        console.log('works', response);
+        const token = await response.json()
+        console.log('works', token);
     }
+
 
     return (
         <>

@@ -6,7 +6,11 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { useState } from "react"
 
 function App() {
-  const [user, setUser] = useState(false)
+  const [user, setUser] = useState(false);
+
+  function getToken (token){
+    setUser(token);
+  }
 
   return (
     <>
