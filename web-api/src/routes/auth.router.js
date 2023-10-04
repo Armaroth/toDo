@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const authRouter = express.Router();
 const initialize = require('../passport-config.js');
 const passport = require('passport');
+const { saveUser } = require('../db/user.store.js');
+const getTokenForUser = require('../utils/user.utils.js');
 
 require('dotenv').config();
 
@@ -34,12 +36,17 @@ authRouter.post('/register', async (req, res) => {
         }
         const salt = await bcrypt.genSalt(saltRounds);
         const hash = await bcrypt.hash(password, salt);
-        const query = `INSERT INTO "user" (email, username, password) VALUES ($1, $2, $3)`
-        await pool.query(query, [email, username, hash])
-
-
-
-        res.send('ok');
+        const user = { email, username, password: hash };
+        const result = await saveUser(user);
+        console.log(result)
+        if (result?.error) {
+            res.status(result.code).send(result);
+            return
+        }
+        console.log(result.data);
+        user.id = result.data;
+        const token = getTokenForUser(user);
+        return res.send({ token })
     }
     catch (error) {
         console.error(error);

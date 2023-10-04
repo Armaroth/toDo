@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import "../App.css"
 import { Link } from 'react-router-dom'
+import { UserContext } from "../context/userContext";
 
 
 
@@ -8,7 +9,7 @@ export function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const { setToken } = useContext(UserContext);
     async function handleSubmit(e) {
         e.preventDefault();
         const response = await fetch(`http://localhost:4000/auth/login`, {
@@ -19,7 +20,8 @@ export function Login() {
             body: JSON.stringify({ email, password })
         })
         const token = await response.json()
-        console.log('works', token);
+        localStorage.setItem('token', JSON.stringify(token))
+        setToken(token)
     }
 
 

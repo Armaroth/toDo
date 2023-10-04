@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import '../App.css'
+import { UserContext } from "../context/userContext";
 
 
 
 export function Register() {
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('')
@@ -20,7 +20,9 @@ export function Register() {
             },
             body: JSON.stringify({ email, username, password })
         })
-        console.log('works');
+        const token = await response.json();
+        localStorage.setItem('token', token)
+
     }
 
     return (

@@ -2,7 +2,7 @@ const getTokenForUser = require('./utils/user.utils');
 
 
 const LocalStrategy = require('passport-local').Strategy;
-const verifyUser = require('./db/user.store');
+const { verifyUser } = require('./db/user.store');
 function initialize(passport) {
 
   async function authenticate(email, password, done) {
@@ -15,4 +15,4 @@ function initialize(passport) {
 }
 
 
-module.exports = initialize;
+module.exports = initialize; 

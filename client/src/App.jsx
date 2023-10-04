@@ -3,29 +3,29 @@ import { Register } from './components/Register'
 import './App.css'
 import { Dashboard } from "./components/Dashboard"
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import { useState } from "react"
+import { useContext, useEffect } from "react"
+import { UserContext } from "./context/userContext"
+
 
 function App() {
-  const [user, setUser] = useState(false);
 
-  function getToken (token){
-    setUser(token);
-  }
+
+  const { token } = useContext(UserContext);
 
   return (
     <>
       <BrowserRouter>
         <Routes>
 
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={token ? <Login /> : <Dashboard />} />
 
 
 
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={token ? <Register /> : <Dashboard />} />
 
 
 
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={token ? <Dashboard /> : <Login />} />
 
 
 
