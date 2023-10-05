@@ -17,11 +17,11 @@ function App() {
       <BrowserRouter>
         <Routes>
 
-          <Route path="/login" element={token ? <Login /> : <Dashboard />} />
+          <Route path="/login" element={!token ? <Login /> : <Dashboard />} />
 
 
 
-          <Route path="/register" element={token ? <Register /> : <Dashboard />} />
+          <Route path="/register" element={!token ? <Register /> : <Dashboard />} />
 
 
 

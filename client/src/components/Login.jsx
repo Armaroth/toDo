@@ -3,10 +3,7 @@ import "../App.css"
 import { Link } from 'react-router-dom'
 import { UserContext } from "../context/userContext";
 
-
-
 export function Login() {
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { setToken } = useContext(UserContext);
@@ -19,16 +16,18 @@ export function Login() {
             },
             body: JSON.stringify({ email, password })
         })
-        const token = await response.json()
-        localStorage.setItem('token', JSON.stringify(token))
-        setToken(token)
+        if (response.ok) {
+            const { token } = await response.json();
+            localStorage.setItem('token', JSON.stringify(token))
+            setToken(token);
+        } else {
+            const message = await response.text();
+            console.log(message);
+        }
     }
-
-
     return (
         <>
             <div className="container justify-content-center mt-5 text-center">
-
                 <form className="form" onSubmit={handleSubmit}>
                     <div>
                         <h1>Login!</h1>
@@ -36,7 +35,6 @@ export function Login() {
                             name="email" placeholder="e-mail" id="email" value={email} onChange={e => setEmail(e.target.value)} />
                     </div>
                     <div>
-
                         <input className="form-control my-3" type="password"
                             name="password" placeholder="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
                     </div>
@@ -44,14 +42,12 @@ export function Login() {
                         <button type="submit" className="btn btn-primary"
                         > Login</button>
                     </div>
-
                 </form>
                 <h2 className="mt-5 h3">
                     Are you new?
                     <Link to={'/register'}> Register </Link>
                     here.
                 </h2>
-
             </div>
 
         </>

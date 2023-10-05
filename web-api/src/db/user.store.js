@@ -2,34 +2,41 @@ const { runQuery } = require('./db');
 const compare = require('bcrypt').compare;
 
 async function searchForUser(email) {
-  const query = `SELECT * FROM "user" WHERE email = $1; `
+  const query = `SELECT * FROM "user" WHERE email = $1;`
   const res = await runQuery(query, [email]);
-  if (res.error) return res.error;
+  if (res.error) {
+    console.log(res.error)
+    return res.error;
+  }
   if (res.data.rows.length === 0) {
-    return null;
+    return { error: 'user not found' };
   }
   return { data: res.data.rows[0] };
 }
 
 async function getUserByEmail(email) {
-  const user = await searchForUser(email);
-  if (!user) {
+  const search = await searchForUser(email);
+  if (search.error) {
+
     return { error: 'user not found' };
   }
-  return { data: user };
+  return { data: search.data };
 }
 
 async function verifyUser(email, password) {
   const res = await getUserByEmail(email);
-  const user = res.data.data;
-  if (!user) return 'users does not exists';
-  return await compare(password, user.password) ? user : 'Incorrect Password';
+  if (res.data) {
+    const user = res.data;
+    if (!user) return 'users does not exist';
+    return await compare(password, user.password) ? user : 'Incorrect Password';
+  }
+  return res.error;
 }
 
 async function saveUser(user) {
   const isDuplicate = await searchForUser(user.email);
   if (isDuplicate) {
-    return { error: "Username already exists", code: 409 }
+    return { error: "Email already exists", code: 409 }
   }
   const query = ` INSERT INTO "user" ("username","password","email") VALUES ($1,$2,$3) RETURNING id`;
   const res = await runQuery(query, [user.username, user.password, user.email]);

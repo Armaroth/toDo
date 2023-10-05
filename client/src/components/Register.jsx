@@ -3,12 +3,11 @@ import { Link } from "react-router-dom";
 import '../App.css'
 import { UserContext } from "../context/userContext";
 
-
-
 export function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('')
+    const [username, setUsername] = useState('');
+    const { setToken } = useContext(UserContext);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -20,11 +19,17 @@ export function Register() {
             },
             body: JSON.stringify({ email, username, password })
         })
-        const token = await response.json();
-        localStorage.setItem('token', token)
-
+        if (!response.ok) {
+            const error = await response.text()
+            console.log(error)
+            return;
+        }
+        else {
+            const { token } = response.json()
+            localStorage.setItem('token', JSON.stringify(token));
+            setToken(token);
+        }
     }
-
     return (
         <>
             <div className="container justify-content-center mt-5 text-center">
@@ -32,19 +37,16 @@ export function Register() {
                 <form className="form" onSubmit={handleSubmit}>
                     <h1>Register</h1>
                     <div>
-
                         <input className="form-control my-3" type="text"
                             name="email" placeholder="e-mail" id="email" value={email}
                             onChange={e => setEmail(e.target.value)} />
                     </div>
                     <div>
-
                         <input className="form-control my-3" type="text"
                             name="username" placeholder="username" id="username" value={username}
                             onChange={e => setUsername(e.target.value)} />
                     </div>
                     <div>
-
                         <input className="form-control my-3" type="password"
                             name="password" placeholder="password" id="password" value={password}
                             onChange={e => setPassword(e.target.value)} />
@@ -57,7 +59,6 @@ export function Register() {
                         <Link to={'/login'}> Login </Link>
                         here.
                     </h2>
-
                 </form>
             </div>
 

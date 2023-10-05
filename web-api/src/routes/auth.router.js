@@ -1,27 +1,24 @@
 const express = require('express');
-const { pool } = require('../db/db.js');
 const bcrypt = require('bcrypt');
 const authRouter = express.Router();
 const initialize = require('../passport-config.js');
 const passport = require('passport');
 const { saveUser } = require('../db/user.store.js');
 const getTokenForUser = require('../utils/user.utils.js');
-
 require('dotenv').config();
 
 initialize(passport);
 
-
-
 authRouter.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    if (!email || !password) return res.sendStatus(400);
+    if (!email || !password) {
+        return res.status(400).send('Missing Credentials');
+    }
     passport.authenticate('local', async (err, token) => {
-        if (err) return res.sendStatus(401).send(err);
+        if (err) return res.status(err.code).send(err.message);
         return res.send({ token });
     })(req, res)
-
-})
+});
 
 authRouter.post('/register', async (req, res) => {
     try {
@@ -38,10 +35,9 @@ authRouter.post('/register', async (req, res) => {
         const hash = await bcrypt.hash(password, salt);
         const user = { email, username, password: hash };
         const result = await saveUser(user);
-        console.log(result)
-        if (result?.error) {
-            res.status(result.code).send(result);
-            return
+        console.log(result.error);
+        if (result.error) {
+            return res.status(result.code).send(result);
         }
         console.log(result.data);
         user.id = result.data;
@@ -51,9 +47,6 @@ authRouter.post('/register', async (req, res) => {
     catch (error) {
         console.error(error);
     }
-
-
-
 })
 
 module.exports = authRouter;

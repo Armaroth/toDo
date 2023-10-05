@@ -20,7 +20,7 @@ export function Dashboard() {
     }, [])
 
     async function logout() {
-        localStorage.setItem('token', false)
+        localStorage.removeItem('token')
         setToken('');
     }
 
