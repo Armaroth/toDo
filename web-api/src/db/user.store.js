@@ -5,18 +5,17 @@ async function searchForUser(email) {
   const query = `SELECT * FROM "user" WHERE email = $1;`
   const res = await runQuery(query, [email]);
   if (res.error) {
-    console.log(res.error)
     return res.error;
   }
   if (res.data.rows.length === 0) {
-    return { error: 'user not found' };
+    return null;
   }
   return { data: res.data.rows[0] };
 }
 
 async function getUserByEmail(email) {
   const search = await searchForUser(email);
-  if (search.error) {
+  if (!search) {
 
     return { error: 'user not found' };
   }

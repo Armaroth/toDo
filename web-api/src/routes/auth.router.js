@@ -7,6 +7,7 @@ const { saveUser } = require('../db/user.store.js');
 const getTokenForUser = require('../utils/user.utils.js');
 require('dotenv').config();
 
+
 initialize(passport);
 
 authRouter.post('/login', async (req, res) => {
@@ -24,7 +25,7 @@ authRouter.post('/register', async (req, res) => {
     try {
         const { email, username, password } = req.body;
         if (!email || !username || !password) {
-            return res.sendStatus(400);
+            return res.status(400).send('Missing credentials');
         }
         let saltRounds = Number(process.env['SALT_ROUNDS']);
         if (!saltRounds) {
@@ -35,14 +36,13 @@ authRouter.post('/register', async (req, res) => {
         const hash = await bcrypt.hash(password, salt);
         const user = { email, username, password: hash };
         const result = await saveUser(user);
-        console.log(result.error);
+        console.log('result: ', result);
         if (result.error) {
-            return res.status(result.code).send(result);
+            return res.status(result.code).send(result.error);
         }
-        console.log(result.data);
         user.id = result.data;
         const token = getTokenForUser(user);
-        return res.send({ token })
+        return res.json(token);
     }
     catch (error) {
         console.error(error);

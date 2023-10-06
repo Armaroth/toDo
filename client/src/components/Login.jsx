@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import "../App.css"
 import { Link } from 'react-router-dom'
 import { UserContext } from "../context/userContext";
@@ -6,24 +6,21 @@ import { UserContext } from "../context/userContext";
 export function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { setToken } = useContext(UserContext);
+    const { setToken, login, error, setError } = useContext(UserContext);
+
+    useEffect(() => {
+        setInterval(() => {
+            if (error) {
+                setError(() => '')
+            }
+        }
+            , '4000')
+    }, [error])
+
     async function handleSubmit(e) {
         e.preventDefault();
-        const response = await fetch(`http://localhost:4000/auth/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        })
-        if (response.ok) {
-            const { token } = await response.json();
-            localStorage.setItem('token', JSON.stringify(token))
-            setToken(token);
-        } else {
-            const message = await response.text();
-            console.log(message);
-        }
+        await login(email, password);
+
     }
     return (
         <>
@@ -42,6 +39,7 @@ export function Login() {
                         <button type="submit" className="btn btn-primary"
                         > Login</button>
                     </div>
+                    {error && <span>{error}</span>}
                 </form>
                 <h2 className="mt-5 h3">
                     Are you new?
