@@ -5,8 +5,6 @@ const initialize = require('../passport-config.js');
 const passport = require('passport');
 const { saveUser } = require('../db/user.store.js');
 const getTokenForUser = require('../utils/user.utils.js');
-require('dotenv').config();
-
 
 initialize(passport);
 
