@@ -13,9 +13,11 @@ authRouter.post('/login', async (req, res) => {
     if (!email || !password) {
         return res.status(400).send('Missing Credentials');
     }
-    passport.authenticate('local', async (err, token) => {
+    passport.authenticate('local', async (err, result) => {
         if (err) return res.status(err.code).send(err.message);
-        return res.send({ token });
+        const token = result;
+        console.log(token)
+        return res.json(token);
     })(req, res)
 });
 
@@ -34,7 +36,6 @@ authRouter.post('/register', async (req, res) => {
         const hash = await bcrypt.hash(password, salt);
         const user = { email, username, password: hash };
         const result = await saveUser(user);
-        console.log('result: ', result);
         if (result.error) {
             return res.status(result.code).send(result.error);
         }

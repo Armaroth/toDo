@@ -28,7 +28,3 @@ async function runQuery(query, args) {
 
 
 module.exports = { pool, runQuery, createTable };
-// Unable to connect to server:connection failed: Connection refused
-// 	Is the server running on that host and accepting TCP/IP connections?
-// connection to server at "localhost" (::1), port 5432 failed: Address not available
-// 	Is the server running on that host and accepting TCP/IP connections?

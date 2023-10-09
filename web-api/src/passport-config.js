@@ -5,7 +5,7 @@ const { verifyUser } = require('./db/user.store');
 function initialize(passport) {
   async function authenticate(email, password, done) {
     const result = await verifyUser(email, password);
-    console.log(result)
+    console.log('result: ', result)
     if (typeof result === 'string') return done({ code: 401, message: result });
     return done(null, getTokenForUser(result));
   }

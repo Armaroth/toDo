@@ -1,6 +1,7 @@
 import { useState } from "react"
 import './dashboard.css';
 
+
 export function Input({ handleData }) {
 
     const [value, setValue] = useState('');

@@ -1,11 +1,12 @@
-import { useContext, createContext, useState, useEffect } from 'react';
+import { useContext, createContext, useState } from 'react';
 
 export const UserContext = createContext(null);
 
 
 export function UserProvider({ children }) {
     const [token, setToken] = useState(localStorage.getItem('token'));
-    const [error, setError] = useState('')
+    const [error, setError] = useState('');
+    const [currentUser, setCurrentUser] = useState({});
 
     async function register(email, username, password) {
         const response = await fetch(`http://localhost:4000/auth/register`, {
@@ -21,7 +22,6 @@ export function UserProvider({ children }) {
         }
         else {
             const token = await response.json();
-            console.log(token)
             localStorage.setItem('token', JSON.stringify(token));
             setToken(token);
         }
@@ -41,14 +41,13 @@ export function UserProvider({ children }) {
             setToken(token);
         } else {
             const message = await response.text();
-            console.log(message);
             setError(message);
         }
     }
 
 
 
-    const r = { token, error, setToken, setError, register, login }
+    const r = { token, error, currentUser, setCurrentUser, setToken, setError, register, login }
     return <UserContext.Provider value={r}>
         {children}
     </UserContext.Provider>
