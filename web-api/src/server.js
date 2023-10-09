@@ -4,6 +4,10 @@ const app = express();
 const userRouter = require('./routes/user.router.js');
 const authRouter = require('./routes/auth.router.js');
 require('dotenv').config();
+const { createTable } = require('./db/db.js')
+
+createTable();
+
 
 
 app.use(cors());
