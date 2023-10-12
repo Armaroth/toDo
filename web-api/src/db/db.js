@@ -8,11 +8,8 @@ const pool = new Pool({
     database: 'stefos'
 })
 
-async function createTable() {
-    const query = `create table if not exists "todo" (
-        todo_id SERIAL PRIMARY KEY,
-        description varchar(255) NOT NULL
-      );`
+async function createTable(query) {
+
     await runQuery(query);
 }
 
