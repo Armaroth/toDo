@@ -8,9 +8,23 @@ const pool = new Pool({
     database: 'stefos'
 })
 
-async function createTable(query) {
+async function createTables() {
+    await runQuery(`CREATE TABLE IF NOT EXISTS "user" (
+        id SERIAL PRIMARY KEY,
+       username VARCHAR(255) NOT NULL,
+       email VARCHAR(255) NOT NULL,
+       password TEXT NOT NULL
+      );`);
 
-    await runQuery(query);
+    await runQuery(`CREATE TABLE IF NOT EXISTS "todo" (
+        todo_id SERIAL PRIMARY KEY,
+        description VARCHAR(255) NOT NULL,
+        user_id INT NOT NULL,
+        CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES "user"(id)
+      );`)
+
+    console.log('database seeded');
+
 }
 
 async function runQuery(query, args) {
@@ -24,4 +38,4 @@ async function runQuery(query, args) {
 
 
 
-module.exports = { pool, runQuery, createTable };
+module.exports = { pool, runQuery, createTables };
