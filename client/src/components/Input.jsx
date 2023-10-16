@@ -1,5 +1,6 @@
 import { useState } from "react"
 import './dashboard.css';
+import { fetchWithAuth } from "../auth.helpers";
 
 
 export function Input({ handleData }) {
@@ -12,7 +13,7 @@ export function Input({ handleData }) {
             return
         }
 
-        const response = await fetch('http://localhost:4000/user', {
+        const response = await fetchWithAuth('http://localhost:4000/user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

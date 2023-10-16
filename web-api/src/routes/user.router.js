@@ -1,14 +1,16 @@
 const express = require('express');
 const { runQuery } = require('../db/db.js');
+const validateToken = require('../middleWare/auth.middleware.js')
 const userRouter = express.Router();
-
+userRouter.use(validateToken);
 
 userRouter.route("/")
     .get(async (req, res) => {
+        const user = res.locals.user;
 
         try {
-            const query = `SELECT * FROM todo ;`
-            const result = await runQuery(query);
+            const query = `SELECT * FROM todo WHERE user_id = ($1) ;`
+            const result = await runQuery(query, [user.id]);
             if (result.rows !== 0) {
                 return res.json(result.data.rows);
             }
@@ -19,9 +21,10 @@ userRouter.route("/")
     })
     .post(async (req, res) => {
         try {
-            const query = ` INSERT INTO todo (description) VALUES ($1);`
+            const user = res.locals.user;
+            const query = ` INSERT INTO todo (description,user_id) VALUES ($1,$2);`
             const { value } = req.body;
-            const result = await runQuery(query, [value]);
+            const result = await runQuery(query, [value, user.id]);
             return res.send(result.data);
 
 

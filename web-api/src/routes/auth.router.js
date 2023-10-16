@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const authRouter = express.Router();
-const initialize = require('../passport-config.js');
+const initialize = require('../middleWare/passport-config.js');
 const passport = require('passport');
 const { saveUser } = require('../db/user.store.js');
 const getTokenForUser = require('../utils/user.utils.js');
@@ -16,7 +16,6 @@ authRouter.post('/login', async (req, res) => {
     passport.authenticate('local', async (err, result) => {
         if (err) return res.status(err.code).send(err.message);
         const token = result;
-        console.log(token)
         return res.json(token);
     })(req, res)
 });

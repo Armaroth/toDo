@@ -1,13 +1,12 @@
-const jwt_decode = require('jwt-decode');
+import jwt_decode from 'jwt-decode'
 
-
-function fetchWithAuth(url, options = {}) {
+export function fetchWithAuth(url, options = {}) {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('token does not exist');
     return fetch(url, {
         ...options,
         headers: {
-            Authorization: `Bearer ${token}`,
+            authorization: `Bearer ${token}`,
             ...options.headers
         },
     }).then(r => {
@@ -20,9 +19,8 @@ function fetchWithAuth(url, options = {}) {
 
 }
 
-function decodeJwt(jwt) {
+export function decodeJwt(jwt) {
     const decoded = jwt_decode(jwt);
     return decoded;
 }
 
-module.exports = { fetchWithAuth, decodeJwt };

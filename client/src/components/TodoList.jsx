@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import './dashboard.css';
+import { fetchWithAuth } from "../auth.helpers";
 
 export function TodoList({ toDos, handleData }) {
 
@@ -8,7 +9,7 @@ export function TodoList({ toDos, handleData }) {
 
     async function onClickEdit(description, id) {
         if (!description) { return }
-        const response = await fetch(`http://localhost:4000/user`, {
+        const response = await fetchWithAuth(`http://localhost:4000/user`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -20,7 +21,7 @@ export function TodoList({ toDos, handleData }) {
     }
 
     async function onClickDelete(id) {
-        const response = await fetch(`http://localhost:4000/user`, {
+        const response = await fetchWithAuth(`http://localhost:4000/user`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

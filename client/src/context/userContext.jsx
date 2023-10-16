@@ -22,6 +22,7 @@ export function UserProvider({ children }) {
         }
         else {
             const token = await response.json();
+            console.log(token)
             localStorage.setItem('token', JSON.stringify(token));
             setToken(token);
         }

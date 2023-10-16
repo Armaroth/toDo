@@ -2,6 +2,7 @@ import { TodoList } from "./TodoList";
 import { Input } from "./Input";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/userContext";
+import { fetchWithAuth } from "../auth.helpers";
 
 
 export function Dashboard() {
@@ -10,7 +11,7 @@ export function Dashboard() {
     const { setToken } = useContext(UserContext)
 
     async function handleData() {
-        const data = await fetch('http://localhost:4000/user');
+        const data = await fetchWithAuth('http://localhost:4000/user');
         const result = await data.json();
         setToDos(() => result)
     }
