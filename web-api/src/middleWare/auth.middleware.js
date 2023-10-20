@@ -8,7 +8,7 @@ function validateToken(req, res, next) {
     let user;
     try {
         user = jwt.verify(JSON.parse(token), process.env.JWT_SECRET_KEY);
-        console.log(user)
+        console.log(user);
         if (!(typeof user === 'object' && 'id' in user)) {
             throw new Error('invalid user extracted from token');
         }

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import '../App.css'
+
 import { UserContext } from "../context/userContext";
 
 export function Register() {

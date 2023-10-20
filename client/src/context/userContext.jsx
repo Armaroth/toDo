@@ -2,7 +2,6 @@ import { createContext, useState } from 'react';
 
 export const UserContext = createContext(null);
 
-
 export function UserProvider({ children }) {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [error, setError] = useState('');
@@ -46,11 +45,8 @@ export function UserProvider({ children }) {
         }
     }
 
-
-
     const r = { token, error, currentUser, setCurrentUser, setToken, setError, register, login }
     return <UserContext.Provider value={r}>
         {children}
-    </UserContext.Provider>
-
+    </UserContext.Provider>;
 }

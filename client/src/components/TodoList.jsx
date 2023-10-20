@@ -1,11 +1,9 @@
 import { useState } from "react";
-import './dashboard.css';
 import { fetchWithAuth } from "../auth.helpers";
 
 export function TodoList({ toDos, handleData }) {
 
     const [description, setDescription] = useState('');
-
 
     async function onClickEdit(description, id) {
         if (!description) { return }
@@ -47,13 +45,14 @@ export function TodoList({ toDos, handleData }) {
                                     Edit
                                 </button>
                                 <div className="modal fade" id={`modal${toDo.todo_id}`} tabIndex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    aria-labelledby="ModalLabel" aria-hidden="true">
                                     <div className="modal-dialog">
                                         <div className="modal-content">
                                             <div className="modal-header">
-                                                <h5 className="modal-title" id="exampleModalLabel">Edit toDo</h5>
+                                                <h5 className="modal-title" id="ModalLabel">Edit toDo</h5>
                                                 <button type="button" className="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                                                    aria-label="Close">
+                                                </button>
                                             </div>
                                             <div className="modal-body">
                                                 <input className="form-control" value={description}
@@ -61,9 +60,11 @@ export function TodoList({ toDos, handleData }) {
                                             </div>
                                             <div className="modal-footer">
                                                 <button type="button" className="btn btn-warning" data-bs-dismiss="modal"
-                                                    onClick={() => onClickEdit(description, toDo.todo_id)}>Edit</button>
+                                                    onClick={() => onClickEdit(description, toDo.todo_id)}>Edit
+                                                </button>
                                                 <button type="button" className="btn btn-danger"
-                                                    data-bs-dismiss="modal">Close</button>
+                                                    data-bs-dismiss="modal">Close
+                                                </button>
 
                                             </div>
                                         </div>

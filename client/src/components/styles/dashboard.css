@@ -1,0 +1,9 @@
+  body {
+    background-color: #6DC0D5;
+  }
+
+  #list {
+    margin-top: 7%;
+    max-width: 800px;
+    flex-wrap: wrap;
+  }

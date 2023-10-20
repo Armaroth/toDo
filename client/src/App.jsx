@@ -1,6 +1,5 @@
 import { Login } from "./components/Login"
 import { Register } from './components/Register'
-import './App.css'
 import { Dashboard } from "./components/Dashboard"
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useContext } from "react"
@@ -14,21 +13,15 @@ function App() {
 
   return (
     <>
+
       <BrowserRouter>
         <Routes>
 
           <Route path="/login" element={!token ? <Login /> : <Dashboard />} />
 
-
-
           <Route path="/register" element={!token ? <Register /> : <Dashboard />} />
 
-
-
           <Route path="/" element={token ? <Dashboard /> : <Login />} />
-
-
-
 
         </Routes>
       </BrowserRouter>

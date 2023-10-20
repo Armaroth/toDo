@@ -1,5 +1,4 @@
 import { useState } from "react"
-import './dashboard.css';
 import { fetchWithAuth } from "../auth.helpers";
 
 

@@ -1,5 +1,4 @@
 import { useContext, useState, useEffect } from "react"
-import "../App.css"
 import { Link } from 'react-router-dom'
 import { UserContext } from "../context/userContext";
 
@@ -24,7 +23,7 @@ export function Login() {
     }
     return (
         <>
-            <div className="container justify-content-center mt-5 text-center">
+            <div id="container" className="container justify-content-center mt-5 text-center">
                 <form className="form" onSubmit={handleSubmit}>
                     <div>
                         <h1>Login!</h1>
