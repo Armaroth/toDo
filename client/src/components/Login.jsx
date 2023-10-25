@@ -5,8 +5,8 @@ import { UserContext } from "../context/userContext";
 export function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { setToken, login, error, setError } = useContext(UserContext);
-
+    const { setToken, loginMutation, error, setError } = useContext(UserContext);
+    // console.log(loginMutation)
     useEffect(() => {
         setInterval(() => {
             if (error) {
@@ -18,7 +18,7 @@ export function Login() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        await login(email, password);
+        loginMutation.mutate({ email, password });
 
     }
     return (

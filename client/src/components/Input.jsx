@@ -1,27 +1,20 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { fetchWithAuth } from "../auth.helpers";
+import { ToDoContext } from "../context/todoContext";
+
 
 
 export function Input({ handleData }) {
 
     const [value, setValue] = useState('');
-
+    const { postMutation } = useContext(ToDoContext);
     async function onSubmitForm(e) {
         e.preventDefault();
         if (!value) {
             return
         }
-
-        const response = await fetchWithAuth('http://localhost:4000/user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ value })
-        });
+        postMutation.mutate(value);
         setValue('');
-        handleData();
-
     }
 
     return (

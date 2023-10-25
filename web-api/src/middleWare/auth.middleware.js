@@ -8,7 +8,6 @@ function validateToken(req, res, next) {
     let user;
     try {
         user = jwt.verify(JSON.parse(token), process.env.JWT_SECRET_KEY);
-        console.log(user);
         if (!(typeof user === 'object' && 'id' in user)) {
             throw new Error('invalid user extracted from token');
         }
@@ -19,5 +18,4 @@ function validateToken(req, res, next) {
     }
     next();
 }
-
 module.exports = validateToken;

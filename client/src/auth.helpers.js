@@ -1,4 +1,4 @@
-import jwt_decode from 'jwt-decode'
+import jwt_decode from 'jwt-decode';
 
 export function fetchWithAuth(url, options = {}) {
     const token = localStorage.getItem('token');
@@ -8,7 +8,7 @@ export function fetchWithAuth(url, options = {}) {
         headers: {
             authorization: `Bearer ${token}`,
             ...options.headers
-        },
+        }
     }).then(r => {
         if (r.status === 401) {
             localStorage.removeItem('token');

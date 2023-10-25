@@ -34,9 +34,9 @@ userRouter.route("/")
     })
     .put(async (req, res) => {
         try {
-            const { description, id } = req.body;
+            const { payload } = req.body;
             const query = 'UPDATE todo SET description = $1 WHERE todo_id = $2 ;'
-            await runQuery(query, [description, id]);
+            await runQuery(query, [payload.description, payload.id]);
             return res.json('Todo was updated.');
         }
 

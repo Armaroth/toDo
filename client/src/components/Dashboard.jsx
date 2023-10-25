@@ -3,27 +3,29 @@ import { Input } from "./Input";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/userContext";
 import { ToDoContext } from "../context/toDoContext";
-import { fetchWithAuth } from "../auth.helpers";
 import { NavLink } from "react-router-dom";
 import "./styles/dashboard.css";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 export function Dashboard() {
-    const x = useContext(ToDoContext);
-
-    const [toDos, setToDos] = useState(x);
+    const { data, status, isFetching } = useContext(ToDoContext);
+    // console.log(data, status, isFetching)
+    const [toDos, setToDos] = useState([]);
     const { setToken } = useContext(UserContext);
 
-    console.log(x)
-    async function handleData() {
-        const data = await fetchWithAuth('http://localhost:4000/user');
-        const result = await data.json();
-        setToDos(() => result)
-    }
 
+    async function handleData() {
+        setToDos(() => data)
+    }
+    const queryCLient = useQueryClient();
     useEffect(() => {
-        handleData();
-    }, [])
+        if (status === 'success' && !isFetching) {
+            queryCLient.invalidateQueries(['todos'])
+            setToDos(() => data)
+        }
+
+    }, [status, data])
 
     async function logout() {
         localStorage.removeItem('token')

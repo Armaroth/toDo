@@ -1,40 +1,34 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { fetchWithAuth } from "../auth.helpers";
+import { ToDoContext } from "../context/todoContext";
 
 export function TodoList({ toDos, handleData }) {
 
     const [description, setDescription] = useState('');
+    const { deleteMutation, editMutation } = useContext(ToDoContext);
 
     async function onClickEdit(description, id) {
-        if (!description) { return }
-        const response = await fetchWithAuth(`http://localhost:4000/user`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ description, id })
-        })
-        handleData();
+        if (!description) return;
+        // const response = await fetchWithAuth(`http://localhost:4000/user`, {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({ description, id })
+        // })
+        // handleData();
+
+        editMutation.mutate({ description, id })
         setDescription('');
     }
 
     async function onClickDelete(id) {
-        const response = await fetchWithAuth(`http://localhost:4000/user`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ id })
-        })
-        handleData();
+        deleteMutation.mutate(id);
     }
-
     return (
         <>
             <div className="container mt-5 ">
                 <ul className="list-group">
-
-
                     {toDos.length ? toDos.map(
                         toDo => <li className="list-group-item d-flex justify-content-between mt-1"
                             key={toDo.todo_id}>{toDo.description}
@@ -65,7 +59,6 @@ export function TodoList({ toDos, handleData }) {
                                                 <button type="button" className="btn btn-danger"
                                                     data-bs-dismiss="modal">Close
                                                 </button>
-
                                             </div>
                                         </div>
                                     </div>
@@ -74,11 +67,8 @@ export function TodoList({ toDos, handleData }) {
                                     onClick={() => onClickDelete(toDo.todo_id)}>Delete</button>
                             </div>
                         </li>) : <li className="list-group-item">ToDo list empty</li>}
-
                 </ul>
             </div>
-
         </>
     )
-
 }

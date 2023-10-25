@@ -7,7 +7,7 @@ export function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const { error, setError, register } = useContext(UserContext);
+    const { error, setError, registerMutation } = useContext(UserContext);
 
     useEffect(() => {
         setInterval(() => {
@@ -20,7 +20,7 @@ export function Register() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        await register(email, password, username);
+        registerMutation.mutate({ email, password, username });
     }
     return (
         <div className="container justify-content-center mt-5 text-center">
