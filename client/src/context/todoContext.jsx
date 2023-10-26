@@ -1,18 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createContext, useState } from 'react';
+import { createContext } from 'react';
 import { fetchWithAuth } from "../auth.helpers";
 
 export const ToDoContext = createContext(null);
 
 export function ToDoProvider({ children }) {
 
-    const { data, status, isFetching } = useQuery({
+    const queryCLient = useQueryClient();
+
+    const { data, status, isFetching, refetch } = useQuery({
         queryKey: ['todos'],
         queryFn: async () => {
             return fetchWithAuth('http://localhost:4000/user').then(data => data.json());
         }
     });
-    const queryCLient = useQueryClient();
 
     const postMutation = useMutation({
         mutationFn: (value) => fetchWithAuth('http://localhost:4000/user', {
@@ -22,7 +23,8 @@ export function ToDoProvider({ children }) {
             },
             body: JSON.stringify({ value })
         }),
-        onSuccess: () => queryCLient.invalidateQueries(['todos'])
+        onSuccess: () => queryCLient.invalidateQueries(['todos']),
+
     });
 
     const deleteMutation = useMutation({
@@ -46,16 +48,12 @@ export function ToDoProvider({ children }) {
         onSuccess: () => queryCLient.invalidateQueries(['todos'])
     });
 
-
-
-    const r = { data, status, isFetching, postMutation, deleteMutation, editMutation }
+    const r = { data, status, isFetching, postMutation, deleteMutation, editMutation, refetch }
     return (
         <div>
             <ToDoContext.Provider value={r}>
                 {children}
             </ToDoContext.Provider>
         </div>)
-
-
 
 }

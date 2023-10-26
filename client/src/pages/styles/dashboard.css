@@ -1,0 +1,18 @@
+  body {
+    background-color: #87BFFF;
+  }
+
+  #list {
+    margin-top: 7%;
+    max-width: 800px;
+    flex-wrap: wrap;
+  }
+
+  .nav {
+    background-color: #ADD7F6;
+  }
+
+  .nav button {
+    color: aliceblue;
+    background-color: #3F8EFC !important;
+  }

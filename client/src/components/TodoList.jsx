@@ -2,29 +2,23 @@ import { useContext, useEffect, useState } from "react";
 import { fetchWithAuth } from "../auth.helpers";
 import { ToDoContext } from "../context/todoContext";
 
-export function TodoList({ toDos, handleData }) {
-
+export function TodoList({ toDos }) {
+    const { status, isFetching } = useContext(ToDoContext)
     const [description, setDescription] = useState('');
     const { deleteMutation, editMutation } = useContext(ToDoContext);
-
     async function onClickEdit(description, id) {
         if (!description) return;
-        // const response = await fetchWithAuth(`http://localhost:4000/user`, {
-        //     method: 'PUT',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({ description, id })
-        // })
-        // handleData();
-
         editMutation.mutate({ description, id })
         setDescription('');
     }
-
     async function onClickDelete(id) {
         deleteMutation.mutate(id);
     }
+
+    if (status !== 'success' || isFetching) {
+        return <h1 className="text-center mt-5 bg-light">Loading...</h1>
+    }
+
     return (
         <>
             <div className="container mt-5 ">

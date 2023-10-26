@@ -1,30 +1,20 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createContext, useState } from 'react';
-
+import { createContext, useContext, useState } from 'react';
+import { ToDoContext } from './todoContext';
+import { decodeJwt } from '../utils'
 export const UserContext = createContext(null);
 
 export function UserProvider({ children }) {
+
+    const [toDos, setToDos] = useState([]);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [error, setError] = useState('');
-    const [currentUser, setCurrentUser] = useState({});
-
-
+    const [currentUser, setCurrentUser] = useState('');
     const queryCLient = useQueryClient();
-    // const postMutation = useMutation({
-    //     mutationFn: (value) => fetchWithAuth('http://localhost:4000/user', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({ value })
-    //     }),
-    //     onSuccess: () => queryCLient.invalidateQueries(['todos'])
-    // });
-
+    const { refetch } = useContext(ToDoContext);
 
     const registerMutation = useMutation({
         mutationFn: async (credentials) => {
-            console.log(credentials.email, credentials.username, credentials.password)
             const response = await fetch(`http://localhost:4000/auth/register`, {
                 method: 'POST',
                 headers: {
@@ -41,16 +31,14 @@ export function UserProvider({ children }) {
                 console.log(token)
                 localStorage.setItem('token', JSON.stringify(token));
                 setToken(token);
+                // setCurrentUser(decodeJwt(token).username);
             }
         },
         onSuccess: () => queryCLient.invalidateQueries(['todos'])
     })
 
-
-
     const loginMutation = useMutation({
         mutationFn: async (credentials) => {
-            console.log(credentials.email, credentials.password)
             const response = await fetch(`http://localhost:4000/auth/login`, {
                 method: 'POST',
                 headers: {
@@ -62,32 +50,24 @@ export function UserProvider({ children }) {
                 const token = await response.json();
                 localStorage.setItem('token', JSON.stringify(token))
                 setToken(token);
+                // setCurrentUser(decodeJwt(token).username);
+                refetch();
             } else {
                 const message = await response.text();
                 setError(message);
             }
-        },
-        onSuccess: () => queryCLient.invalidateQueries(['todos'])
-    })
-    // async function login(email, password) {
-    //     const response = await fetch(`http://localhost:4000/auth/login`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({ email, password })
-    //     })
-    //     if (response.ok) {
-    //         const token = await response.json();
-    //         localStorage.setItem('token', JSON.stringify(token))
-    //         setToken(token);
-    //     } else {
-    //         const message = await response.text();
-    //         setError(message);
-    //     }
-    // }
+        }
 
-    const r = { token, error, currentUser, setCurrentUser, setToken, setError, registerMutation, loginMutation }
+    })
+
+    async function logout() {
+        localStorage.removeItem('token')
+        setToken('');
+        setCurrentUser('')
+        setToDos([]);
+    }
+
+    const r = { token, error, currentUser, setCurrentUser, setToken, setError, registerMutation, loginMutation, logout, toDos, setToDos }
     return <UserContext.Provider value={r}>
         {children}
     </UserContext.Provider>;
