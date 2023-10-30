@@ -23,6 +23,17 @@ async function createTables() {
         CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES "user"(id)
       );`)
 
+
+    await runQuery(`CREATE TABLE IF NOT EXISTS "archivedtodo" (
+        todo_id SERIAL PRIMARY KEY,
+        description VARCHAR(255) NOT NULL,
+        user_id INT NOT NULL,
+        CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES "user"(id)
+      );`)
+
+
+
+
     console.log('database seeded');
 
 }

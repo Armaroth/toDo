@@ -1,21 +1,22 @@
 import { useContext, useEffect, useState } from "react";
-import { fetchWithAuth } from "../auth.helpers";
 import { ToDoContext } from "../context/todoContext";
 
 export function TodoList({ toDos }) {
     const { status, isFetching } = useContext(ToDoContext)
     const [description, setDescription] = useState('');
-    const { deleteMutation, editMutation } = useContext(ToDoContext);
+    const { deleteMutation, editMutation, postArchivedMutation } = useContext(ToDoContext);
     async function onClickEdit(description, id) {
         if (!description) return;
         editMutation.mutate({ description, id })
         setDescription('');
     }
     async function onClickDelete(id) {
+        // console.log(id);
+        postArchivedMutation.mutate(id);
         deleteMutation.mutate(id);
     }
 
-    if (status !== 'success' || isFetching) {
+    if (status == 'pending' || isFetching) {
         return <h1 className="text-center mt-5 bg-light">Loading...</h1>
     }
 
@@ -24,10 +25,10 @@ export function TodoList({ toDos }) {
             <div className="container mt-5 ">
                 <ul className="list-group">
                     {toDos.length ? toDos.map(
-                        toDo => <li className="list-group-item d-flex justify-content-between mt-1"
+                        toDo => <li className="list-group-item d-flex justify-content-between my-1"
                             key={toDo.todo_id}>{toDo.description}
                             <div className="align-self-end">
-                                <button type="button" className="btn btn-warning d-inline-block ms-1" data-bs-toggle="modal"
+                                <button type="button" className="btn btn-warning d-inline-block md-1" data-bs-toggle="modal"
                                     data-bs-target={`#modal${toDo.todo_id}`}
                                     onClick={() => setDescription(toDo.description)}>
                                     Edit
@@ -58,7 +59,8 @@ export function TodoList({ toDos }) {
                                     </div>
                                 </div>
                                 <button className="btn btn-danger d-inline-block ms-1"
-                                    onClick={() => onClickDelete(toDo.todo_id)}>Delete</button>
+                                    onClick={() => onClickDelete(toDo.todo_id)}>Delete
+                                </button>
                             </div>
                         </li>) : <li className="list-group-item">ToDo list empty</li>}
                 </ul>

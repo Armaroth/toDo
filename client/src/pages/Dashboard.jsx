@@ -1,16 +1,19 @@
 import { TodoList } from "../components/TodoList";
 import { Input } from "../components/Input";
+import { ArchivedToDos } from '../components/ArchivedTodos'
 import { useEffect, useContext } from "react";
 import { UserContext } from "../context/userContext";
 import { ToDoContext } from "../context/toDoContext";
-import "./styles/dashboard.css";
 import { useQueryClient } from "@tanstack/react-query";
 import { decodeJwt } from "../auth.helpers";
+import "./styles/dashboard.css";
 
 
 export function Dashboard() {
     const { data, status, isFetching } = useContext(ToDoContext);
     const { token, currentUser, setCurrentUser, toDos, setToDos, logout } = useContext(UserContext);
+
+    /////
     async function handleData() {
         setToDos(() => data)
     }
@@ -25,9 +28,10 @@ export function Dashboard() {
 
     return (
         <div id="dashboard" >
-            <div className="d-flex justify-content-end nav py-2 ">
+            <div className="d-flex justify-content-end py-2 ">
                 <h1 className="mx-3 mt-1 h4"> Current User: {currentUser}</h1>
-                <button className="btn" onClick={logout}>Logout</button>
+                <ArchivedToDos />
+                <button className="btn d-inline ml-1 nav-button" onClick={logout}>Logout</button>
             </div>
             <div id="list" className="container">
                 <Input handleData={handleData} />

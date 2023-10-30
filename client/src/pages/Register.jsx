@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/userContext";
+import "./styles/register.css"
 
 export function Register() {
     const [email, setEmail] = useState('');
@@ -22,22 +23,22 @@ export function Register() {
         registerMutation.mutate({ email, password, username });
     }
     return (
-        <div className="container justify-content-center mt-5 text-center">
+        <div id="container" className="container justify-content-center mt-5 text-center">
 
             <form className="form" onSubmit={handleSubmit}>
                 <h1>Register</h1>
                 <div>
-                    <input className="form-control my-3" type="text"
+                    <input className="form-control my-3" type="text" autoComplete="on"
                         name="email" placeholder="e-mail" id="email" value={email}
                         onChange={e => setEmail(e.target.value)} />
                 </div>
                 <div>
-                    <input className="form-control my-3" type="text"
+                    <input className="form-control my-3" type="text" autoComplete="on"
                         name="username" placeholder="username" id="username" value={username}
                         onChange={e => setUsername(e.target.value)} />
                 </div>
                 <div>
-                    <input className="form-control my-3" type="password"
+                    <input className="form-control my-3" type="password" autoComplete="on"
                         name="password" placeholder="password" id="password" value={password}
                         onChange={e => setPassword(e.target.value)} />
                 </div>

@@ -6,29 +6,27 @@ userRouter.use(validateToken);
 
 userRouter.route("/")
     .get(async (req, res) => {
-        const user = res.locals.user;
-
         try {
+            const user = res.locals.user;
             const query = `SELECT * FROM todo WHERE user_id = ($1) ;`
             const result = await runQuery(query, [user.id]);
             if (result.rows !== 0) {
                 return res.json(result.data.rows);
             }
-
-        } catch (error) {
+        }
+        catch (error) {
             console.error(error);
         }
     })
     .post(async (req, res) => {
         try {
             const user = res.locals.user;
-            const query = ` INSERT INTO todo (description,user_id) VALUES ($1,$2);`
             const { value } = req.body;
+            const query = ` INSERT INTO todo (description,user_id) VALUES ($1,$2);`
             const result = await runQuery(query, [value, user.id]);
             return res.send(result.data);
-
-
-        } catch (error) {
+        }
+        catch (error) {
             console.error(error);
         }
     })
@@ -39,7 +37,6 @@ userRouter.route("/")
             await runQuery(query, [payload.description, payload.id]);
             return res.json('Todo was updated.');
         }
-
         catch (error) {
             console.error(error);
         }
@@ -51,11 +48,50 @@ userRouter.route("/")
             await runQuery(query, [id]);
             return res.json('Todo was deleted.');
         }
-
         catch (error) {
             console.error(error);
         }
+    })
 
+userRouter.route("/archived")
+    .get(async (req, res) => {
+        try {
+            const user = res.locals.user;
+            const query = `SELECT * FROM archivedtodo WHERE user_id = ($1) ;`
+            const result = await runQuery(query, [user.id]);
+            if (result.rows !== 0) {
+                return res.json(result.data.rows);
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    })
+    .post(async (req, res) => {
+        try {
+            const user = res.locals.user;
+            const id = req.body.value;
+            const descQuery = `SELECT description FROM todo WHERE todo_id = ($1) ;`;
+            const value = await runQuery(descQuery, [id]);
+            const description = value.data.rows[0].description;
+            const query = ` INSERT INTO archivedtodo (description,user_id) VALUES ($1,$2);`
+            const result = await runQuery(query, [description, user.id]);
+            return res.send(result.data);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    })
+    .delete(async (req, res) => {
+        try {
+            const { id } = req.body;
+            const query = 'DELETE FROM archivedtodo WHERE todo_id = $1 ;'
+            await runQuery(query, [id]);
+            return res.json('Todo was deleted.');
+        }
+        catch (error) {
+            console.error(error);
+        }
     })
 
 module.exports = userRouter;

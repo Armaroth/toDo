@@ -1,16 +1,15 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { createContext, useContext, useState } from 'react';
 import { ToDoContext } from './todoContext';
-import { decodeJwt } from '../utils'
 export const UserContext = createContext(null);
 
 export function UserProvider({ children }) {
 
     const [toDos, setToDos] = useState([]);
+    const [archivedToDos, setArchivedToDos] = useState([]);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [error, setError] = useState('');
     const [currentUser, setCurrentUser] = useState('');
-    const queryCLient = useQueryClient();
     const { refetch } = useContext(ToDoContext);
 
     const registerMutation = useMutation({
@@ -25,16 +24,16 @@ export function UserProvider({ children }) {
             if (!response.ok) {
                 const error = await response.text();
                 setError(error);
+                refetch();
             }
             else {
                 const token = await response.json();
                 console.log(token)
                 localStorage.setItem('token', JSON.stringify(token));
                 setToken(token);
-                // setCurrentUser(decodeJwt(token).username);
+
             }
-        },
-        onSuccess: () => queryCLient.invalidateQueries(['todos'])
+        }
     })
 
     const loginMutation = useMutation({
@@ -50,7 +49,6 @@ export function UserProvider({ children }) {
                 const token = await response.json();
                 localStorage.setItem('token', JSON.stringify(token))
                 setToken(token);
-                // setCurrentUser(decodeJwt(token).username);
                 refetch();
             } else {
                 const message = await response.text();
@@ -67,7 +65,7 @@ export function UserProvider({ children }) {
         setToDos([]);
     }
 
-    const r = { token, error, currentUser, setCurrentUser, setToken, setError, registerMutation, loginMutation, logout, toDos, setToDos }
+    const r = { token, error, currentUser, setCurrentUser, setToken, setError, registerMutation, loginMutation, logout, toDos, setToDos, archivedToDos, setArchivedToDos }
     return <UserContext.Provider value={r}>
         {children}
     </UserContext.Provider>;
