@@ -21,19 +21,23 @@ export function ArchivedToDos() {
 
     return (
         <>
-            <button className="btn mx-2 btn-light" onClick={() => setShow(true)}> Archived toDos</button>
+            <button className="btn mx-2 btn-light" disabled={archivedStatus == 'pending' || archivedIsFetching} onClick={() => {
+                // queryCLient.invalidateQueries(['archivedTodos']);
+                archivedToDos.map(toDo => console.log(toDo.todo_id))
+                setShow(true);
+            }}> Archived toDos</button>
             {show && (
                 <div className="modal-overlay" onClick={() => setShow(false)}>
                     <div className="archived-modal container" onClick={event => event.stopPropagation()}>
                         <div className="d-flex justify-content-between">
 
                             <h2 className='h4 m-0 px-4'>Archived ToDos</h2>
-                            <button className='btn btn-dark m-0' onClick={() => setShow(false)}>x</button>
+                            <button className='btn btn-dark m-0 px-4' onClick={() => setShow(false)}>x</button>
                         </div>
                         <ul className="list-group d-flex flex-direction-row archived-list">
                             {archivedToDos.length ? archivedToDos.map(
                                 toDo => <>
-                                    <li className="list-group-item d-flex justify-content-between my-1 px-2" key={toDo.todo_id}>
+                                    <li key={toDo.todo_id} className="list-group-item d-flex justify-content-between my-1 px-2" >
                                         <p className='h6 px-3'>
                                             {toDo.description}
                                         </p>

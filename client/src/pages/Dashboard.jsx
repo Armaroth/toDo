@@ -31,7 +31,7 @@ export function Dashboard() {
             <div className="d-flex justify-content-end py-2 ">
                 <h1 className="mx-3 mt-1 h4"> Current User: {currentUser}</h1>
                 <ArchivedToDos />
-                <button className="btn d-inline ml-1 nav-button" onClick={logout}>Logout</button>
+                <button className="btn btn-dark d-inline ml-1" onClick={logout}>Logout</button>
             </div>
             <div id="list" className="container">
                 <Input handleData={handleData} />

@@ -28,17 +28,17 @@ export function Register() {
             <form className="form" onSubmit={handleSubmit}>
                 <h1>Register</h1>
                 <div>
-                    <input className="form-control my-3" type="text" autoComplete="on"
+                    <input required className="form-control my-3" type="text" autoComplete="off"
                         name="email" placeholder="e-mail" id="email" value={email}
                         onChange={e => setEmail(e.target.value)} />
                 </div>
                 <div>
-                    <input className="form-control my-3" type="text" autoComplete="on"
+                    <input required className="form-control my-3" type="text" autoComplete="off"
                         name="username" placeholder="username" id="username" value={username}
                         onChange={e => setUsername(e.target.value)} />
                 </div>
                 <div>
-                    <input className="form-control my-3" type="password" autoComplete="on"
+                    <input required className="form-control my-3" type="password" autoComplete="off"
                         name="password" placeholder="password" id="password" value={password}
                         onChange={e => setPassword(e.target.value)} />
                 </div>

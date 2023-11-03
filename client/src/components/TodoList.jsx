@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { ToDoContext } from "../context/todoContext";
 
 export function TodoList({ toDos }) {
@@ -11,7 +11,6 @@ export function TodoList({ toDos }) {
         setDescription('');
     }
     async function onClickDelete(id) {
-        // console.log(id);
         postArchivedMutation.mutate(id);
         deleteMutation.mutate(id);
     }
@@ -59,7 +58,7 @@ export function TodoList({ toDos }) {
                                     </div>
                                 </div>
                                 <button className="btn btn-danger d-inline-block ms-1"
-                                    onClick={() => onClickDelete(toDo.todo_id)}>Delete
+                                    onClick={() => onClickDelete(toDo.todo_id)}>Archive
                                 </button>
                             </div>
                         </li>) : <li className="list-group-item">ToDo list empty</li>}
