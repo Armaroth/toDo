@@ -10,7 +10,7 @@ export function UserProvider({ children }) {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [error, setError] = useState('');
     const [currentUser, setCurrentUser] = useState('');
-    const { refetch } = useContext(ToDoContext);
+    const { refetch, archivedRefetch } = useContext(ToDoContext);
 
     const registerMutation = useMutation({
         mutationFn: async (credentials) => {
@@ -24,14 +24,14 @@ export function UserProvider({ children }) {
             if (!response.ok) {
                 const error = await response.text();
                 setError(error);
-                refetch();
             }
             else {
-                const token = await response.json();
-                console.log(token)
-                localStorage.setItem('token', JSON.stringify(token));
-                setToken(token);
-
+                const { accessToken, refreshToken } = await response.json();
+                localStorage.setItem('token', JSON.stringify(accessToken));
+                localStorage.setItem('refreshToken', JSON.stringify(refreshToken));
+                setToken(accessToken);
+                refetch();
+                archivedRefetch();
             }
         }
     })
@@ -46,10 +46,12 @@ export function UserProvider({ children }) {
                 body: JSON.stringify({ email: credentials.email, password: credentials.password })
             })
             if (response.ok) {
-                const token = await response.json();
-                localStorage.setItem('token', JSON.stringify(token))
-                setToken(token);
+                const { accessToken, refreshToken } = await response.json();
+                localStorage.setItem('token', JSON.stringify(accessToken));
+                localStorage.setItem('refreshToken', JSON.stringify(refreshToken));
+                setToken(accessToken);
                 refetch();
+                archivedRefetch();
             } else {
                 const message = await response.text();
                 setError(message);

@@ -8,9 +8,7 @@ import { UserContext } from "./context/userContext"
 
 function App() {
 
-
   const { token } = useContext(UserContext);
-
   return (
     <>
 

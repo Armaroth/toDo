@@ -22,8 +22,6 @@ export function ArchivedToDos() {
     return (
         <>
             <button className="btn mx-2 btn-light" disabled={archivedStatus == 'pending' || archivedIsFetching} onClick={() => {
-                // queryCLient.invalidateQueries(['archivedTodos']);
-                archivedToDos.map(toDo => console.log(toDo.todo_id))
                 setShow(true);
             }}> Archived toDos</button>
             {show && (
@@ -43,11 +41,8 @@ export function ArchivedToDos() {
                                         </p>
                                         <div>
                                             <button className="btn btn-success d-inline-block mx-1 p-2" onClick={async () => {
-                                                await postMutation.mutate(toDo.description);
-                                                if (postMutation.isSuccess) {
-
-                                                    deleteArchivedMutation.mutate(toDo.todo_id);
-                                                }
+                                                postMutation.mutate(toDo.description);
+                                                deleteArchivedMutation.mutate(toDo.todo_id);
                                             }}
                                             >Restore
                                             </button>

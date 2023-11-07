@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { ToDoContext } from "../context/todoContext";
-
+import './styles/TodoList.css'
 export function TodoList({ toDos }) {
     const { status, isFetching } = useContext(ToDoContext)
     const [description, setDescription] = useState('');
@@ -26,12 +26,19 @@ export function TodoList({ toDos }) {
                     {toDos.length ? toDos.map(
                         toDo => <li className="list-group-item d-flex justify-content-between my-1"
                             key={toDo.todo_id}>{toDo.description}
-                            <div className="align-self-end">
-                                <button type="button" className="btn btn-warning d-inline-block md-1" data-bs-toggle="modal"
+                            {/* check box */}
+                            <div className="align-self-end d-flex">
+                                <div class="form-check my-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                                </div>
+
+                                {/* edit button */}
+                                <button type="button" className="btn btn-warning d-inline-block " data-bs-toggle="modal"
                                     data-bs-target={`#modal${toDo.todo_id}`}
                                     onClick={() => setDescription(toDo.description)}>
                                     Edit
                                 </button>
+                                {/* edit modal */}
                                 <div className="modal fade" id={`modal${toDo.todo_id}`} tabIndex="-1"
                                     aria-labelledby="ModalLabel" aria-hidden="true">
                                     <div className="modal-dialog">
@@ -57,6 +64,7 @@ export function TodoList({ toDos }) {
                                         </div>
                                     </div>
                                 </div>
+                                {/* archive button */}
                                 <button className="btn btn-danger d-inline-block ms-1"
                                     onClick={() => onClickDelete(toDo.todo_id)}>Archive
                                 </button>

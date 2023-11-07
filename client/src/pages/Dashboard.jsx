@@ -13,7 +13,6 @@ export function Dashboard() {
     const { data, status, isFetching } = useContext(ToDoContext);
     const { token, currentUser, setCurrentUser, toDos, setToDos, logout } = useContext(UserContext);
 
-    /////
     async function handleData() {
         setToDos(() => data)
     }
@@ -28,7 +27,7 @@ export function Dashboard() {
 
     return (
         <div id="dashboard" >
-            <div className="d-flex justify-content-end py-2 ">
+            <div className="d-flex justify-content-end py-2 sticky-top">
                 <h1 className="mx-3 mt-1 h4"> Current User: {currentUser}</h1>
                 <ArchivedToDos />
                 <button className="btn btn-dark d-inline ml-1" onClick={logout}>Logout</button>

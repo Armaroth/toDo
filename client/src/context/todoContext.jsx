@@ -99,6 +99,7 @@ export function ToDoProvider({ children }) {
         archivedData: archivedQuery.data
         , archivedStatus: archivedQuery.status
         , archivedIsFetching: archivedQuery.isFetching,
+        refetchArhcived: archivedQuery.refetch,
         postArchivedMutation,
         deleteArchivedMutation
     }

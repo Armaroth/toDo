@@ -7,13 +7,13 @@ function validateToken(req, res, next) {
     if (!token) return res.sendStatus(401);
     let user;
     try {
-        user = jwt.verify(JSON.parse(token), process.env.JWT_SECRET_KEY);
+        user = jwt.verify(JSON.parse(token), process.env.JWT_ACCESS_KEY);
+
         if (!(typeof user === 'object' && 'id' in user)) {
             throw new Error('invalid user extracted from token');
         }
         res.locals.user = user;
     } catch (e) {
-        console.log('here')
         return res.sendStatus(401);
     }
     next();

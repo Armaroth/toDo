@@ -5,6 +5,7 @@ const initialize = require('../middleWare/passport-config.js');
 const passport = require('passport');
 const { saveUser } = require('../db/user.store.js');
 const getTokenForUser = require('../utils/user.utils.js');
+const jwt = require('jsonwebtoken');
 
 initialize(passport);
 
@@ -15,8 +16,8 @@ authRouter.post('/login', async (req, res) => {
     }
     passport.authenticate('local', async (err, result) => {
         if (err) return res.status(err.code).send(err.message);
-        const token = result;
-        return res.json(token);
+        const { accessToken, refreshToken } = result;
+        return res.json({ accessToken, refreshToken });
     })(req, res)
 });
 
@@ -39,12 +40,31 @@ authRouter.post('/register', async (req, res) => {
             return res.status(result.code).send(result.error);
         }
         user.id = result.data;
-        const token = getTokenForUser(user);
-        return res.json(token);
+        const accessToken = getTokenForUser(user, process.env.JWT_ACCESS_KEY);
+        const refreshToken = getTokenForUser(user, process.env.JWT_REFRESH_KEY);
+        return res.json({ accessToken, refreshToken });
     }
     catch (error) {
         console.error(error);
     }
+})
+authRouter.post('/refresh', async (req, res) => {
+    const { refreshToken } = req.body;
+    try {
+        const user = jwt.verify(JSON.parse(refreshToken), process.env.JWT_REFRESH_KEY);
+        if (!(typeof user === 'object' && 'id' in user)) {
+            throw new Error('invalid user extracted from token');
+        }
+        const newAccessToken = getTokenForUser(user, process.env.JWT_ACCESS_KEY);
+        const newRefreshToken = getTokenForUser(user, process.env.JWT_REFRESH_KEY);
+        return res.json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
+    } catch (error) {
+        return res.sendStatus(401);
+    }
+
+
+
+
 })
 
 module.exports = authRouter;
