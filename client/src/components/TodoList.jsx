@@ -28,8 +28,8 @@ export function TodoList({ toDos }) {
                             key={toDo.todo_id}>{toDo.description}
                             {/* check box */}
                             <div className="align-self-end d-flex">
-                                <div class="form-check my-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                                <div className="form-check my-2">
+                                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
                                 </div>
 
                                 {/* edit button */}

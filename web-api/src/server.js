@@ -6,6 +6,8 @@ const authRouter = require('./routes/auth.router.js');
 require('dotenv').config();
 const { createTables } = require('./db/db.js');
 
+console.log('dirname', __dirname);
+console.log('filename', __filename);
 createTables();
 
 

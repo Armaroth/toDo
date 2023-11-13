@@ -12,7 +12,6 @@ import "./styles/dashboard.css";
 export function Dashboard() {
     const { data, status, isFetching } = useContext(ToDoContext);
     const { token, currentUser, setCurrentUser, toDos, setToDos, logout } = useContext(UserContext);
-
     async function handleData() {
         setToDos(() => data)
     }
