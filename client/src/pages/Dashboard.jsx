@@ -3,7 +3,7 @@ import { Input } from "../components/Input";
 import { ArchivedToDos } from '../components/ArchivedTodos'
 import { useEffect, useContext } from "react";
 import { UserContext } from "../context/userContext";
-import { ToDoContext } from "../context/toDoContext";
+import { ToDoContext } from "../context/todoContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { decodeJwt } from "../auth.helpers";
 import "./styles/dashboard.css";
