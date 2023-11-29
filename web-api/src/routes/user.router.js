@@ -8,7 +8,7 @@ userRouter.route("/")
     .get(async (req, res) => {
         try {
             const user = res.locals.user;
-            const query = `SELECT * FROM todo WHERE user_id = ($1) ;`
+            const query = `SELECT * FROM todo WHERE user_id = ($1) ORDER BY todo_id ;`
             const result = await runQuery(query, [user.id]);
             if (result.rows !== 0) {
                 return res.json(result.data.rows);

@@ -8,35 +8,25 @@ const pool = new Pool({
     database: 'stefos'
 })
 
-async function createTables() {
-    await runQuery(`CREATE TABLE IF NOT EXISTS "user" (
-        id SERIAL PRIMARY KEY,
-       username VARCHAR(255) NOT NULL,
-       email VARCHAR(255) NOT NULL,
-       password TEXT NOT NULL
-      );`);
+const path = require('path');
+const readDirSync = require('fs').readdirSync;
+const readFileSync = require('fs').readFileSync;
 
-    await runQuery(`CREATE TABLE IF NOT EXISTS "todo" (
-        todo_id SERIAL PRIMARY KEY,
-        description VARCHAR(255) NOT NULL,
-        user_id INT NOT NULL,
-        CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES "user"(id)
-      );`)
-
-
-    await runQuery(`CREATE TABLE IF NOT EXISTS "archivedtodo" (
-        todo_id SERIAL PRIMARY KEY,
-        description VARCHAR(255) NOT NULL,
-        user_id INT NOT NULL,
-        CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES "user"(id)
-      );`)
-
-
-
+async function seedDatabase() {
+    const filenames = readDirSync(__dirname + '/migrations', 'utf-8');
+    if (!filenames) throw new Error('there is no init db file');
+    await runQuery('BEGIN');
+    for (const filename of filenames) {
+        const query = readFileSync(`${__dirname}/migrations/${filename}`, 'utf-8')
+        await runQuery(query);
+    }
+    await runQuery('COMMIT');
 
     console.log('database seeded');
-
 }
+
+
+
 
 async function runQuery(query, args) {
     try {
@@ -49,4 +39,4 @@ async function runQuery(query, args) {
 
 
 
-module.exports = { pool, runQuery, createTables };
+module.exports = { pool, runQuery, seedDatabase };

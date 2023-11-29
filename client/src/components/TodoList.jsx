@@ -11,10 +11,9 @@ export function TodoList({ toDos }) {
         setDescription('');
     }
     async function onClickDelete(id) {
-        postArchivedMutation.mutate(id);
+        await postArchivedMutation.mutate(id);
         deleteMutation.mutate(id);
     }
-
     if (status == 'pending' || isFetching) {
         return <h1 className="text-center mt-5 bg-light">Loading...</h1>
     }

@@ -6,6 +6,8 @@ const passport = require('passport');
 const { saveUser } = require('../db/user.store.js');
 const getTokenForUser = require('../utils/user.utils.js');
 const jwt = require('jsonwebtoken');
+const { runQuery } = require('../db/db.js');
+
 
 initialize(passport);
 
@@ -16,8 +18,10 @@ authRouter.post('/login', async (req, res) => {
     }
     passport.authenticate('local', async (err, result) => {
         if (err) return res.status(err.code).send(err.message);
-        const { accessToken, refreshToken } = result;
-        return res.json({ accessToken, refreshToken });
+        const { accessToken, refreshToken, id } = result;
+        const query = 'UPDATE "user" SET refresh_token = $1 WHERE id = $2 ;'
+        await runQuery(query, [refreshToken, id]);
+        return res.json({ accessToken });
     })(req, res)
 });
 
@@ -42,29 +46,38 @@ authRouter.post('/register', async (req, res) => {
         user.id = result.data;
         const accessToken = getTokenForUser(user, process.env.JWT_ACCESS_KEY);
         const refreshToken = getTokenForUser(user, process.env.JWT_REFRESH_KEY);
-        return res.json({ accessToken, refreshToken });
+        const query = 'UPDATE "user" SET refresh_token = $1 WHERE id = $2 ;'
+        await runQuery(query, [refreshToken, user.id]);
+        return res.json({ accessToken });
     }
     catch (error) {
         console.error(error);
     }
 })
+
+authRouter.delete('/logout', async (req, res) => {
+    const { id } = req.body;
+    const query = 'UPDATE "user" SET refresh_token = $1 WHERE id = $2 ;'
+    await runQuery(query, [null, id]);
+    return res.sendStatus(200);
+})
+
 authRouter.post('/refresh', async (req, res) => {
-    const { refreshToken } = req.body;
+    const { id } = req.body;
+    const result = await runQuery(`SELECT refresh_token FROM "user" WHERE id = $1 ;`, [id])
+    const { refresh_token } = result.data.rows[0]
     try {
-        const user = jwt.verify(JSON.parse(refreshToken), process.env.JWT_REFRESH_KEY);
+        const user = jwt.verify(refresh_token, process.env.JWT_REFRESH_KEY);
         if (!(typeof user === 'object' && 'id' in user)) {
             throw new Error('invalid user extracted from token');
         }
-        const newAccessToken = getTokenForUser(user, process.env.JWT_ACCESS_KEY);
+        const newAccessToken = getTokenForUser(user, process.env.JWT_ACCESS_KEY, 'access');
         const newRefreshToken = getTokenForUser(user, process.env.JWT_REFRESH_KEY);
-        return res.json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
+        await runQuery('UPDATE "user" SET refresh_token = $1 WHERE id = $2 ;', [newRefreshToken, id]);
+        return res.json({ accessToken: newAccessToken });
     } catch (error) {
         return res.sendStatus(401);
     }
-
-
-
-
 })
 
 module.exports = authRouter;

@@ -28,6 +28,7 @@ async function verifyUser(email, password) {
     const user = res.data;
     if (!user) return 'users does not exist';
     return await compare(password, user.password) ? user : 'Incorrect Password';
+
   }
   return res.error;
 }

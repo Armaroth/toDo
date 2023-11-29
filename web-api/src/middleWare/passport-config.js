@@ -6,7 +6,7 @@ function initialize(passport) {
   async function authenticate(email, password, done) {
     const result = await verifyUser(email, password);
     if (typeof result === 'string') return done({ code: 401, message: result });
-    return done(null, { accessToken: getTokenForUser(result, process.env.JWT_ACCESS_KEY), refreshToken: getTokenForUser(result, process.env.JWT_REFRESH_KEY) });
+    return done(null, { accessToken: getTokenForUser(result, process.env.JWT_ACCESS_KEY, 'access'), refreshToken: getTokenForUser(result, process.env.JWT_REFRESH_KEY), id: result.id });
   }
   passport.use(new LocalStrategy({ usernameField: 'email' }, authenticate))
 }

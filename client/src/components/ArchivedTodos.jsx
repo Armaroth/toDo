@@ -41,7 +41,7 @@ export function ArchivedToDos() {
                                         </p>
                                         <div>
                                             <button className="btn btn-success d-inline-block mx-1 p-2" onClick={async () => {
-                                                postMutation.mutate(toDo.description);
+                                                await postMutation.mutate(toDo.description);
                                                 deleteArchivedMutation.mutate(toDo.todo_id);
                                             }}
                                             >Restore

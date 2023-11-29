@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { createContext, useContext, useState } from 'react';
 import { ToDoContext } from './todoContext';
+import { decodeJwt } from "../auth.helpers";
 export const UserContext = createContext(null);
 
 export function UserProvider({ children }) {
@@ -61,6 +62,14 @@ export function UserProvider({ children }) {
     })
 
     async function logout() {
+        const id = decodeJwt(token).id;
+        const response = await fetch(`http://localhost:4000/auth/logout`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id })
+        })
         localStorage.removeItem('token')
         setToken('');
         setCurrentUser('')
