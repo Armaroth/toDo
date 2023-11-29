@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import './styles/ArchivedToDos.css'
+import './styles/ArchivedTodos.css'
 import { useContext } from 'react'
 import { UserContext } from '../context/userContext'
 import { ToDoContext } from '../context/todoContext';

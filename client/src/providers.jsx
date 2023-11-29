@@ -1,4 +1,4 @@
-import { ToDoProvider } from './context/toDoContext';
+import { ToDoProvider } from './context/todoContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { UserProvider } from './context/userContext';
 
