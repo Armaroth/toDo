@@ -20,7 +20,12 @@ async function seedDatabase() {
         const query = readFileSync(`${__dirname}/migrations/${filename}`, 'utf-8')
         await runQuery(query);
     }
-    await runQuery('COMMIT');
+    try {
+
+        await runQuery('COMMIT');
+    } catch (error) {
+        await runQuery('ROLLBACK');
+    }
 
     console.log('database seeded');
 }

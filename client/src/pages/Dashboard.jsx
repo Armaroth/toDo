@@ -18,9 +18,8 @@ export function Dashboard() {
     const queryCLient = useQueryClient();
     useEffect(() => {
         if (status === 'success' && !isFetching) {
-            queryCLient.invalidateQueries(['todos'])
-            setCurrentUser(decodeJwt(token).username)
-            setToDos(() => data)
+            setCurrentUser(decodeJwt(token).username);
+            setToDos(() => data);
         }
     }, [status, data])
 
@@ -32,8 +31,8 @@ export function Dashboard() {
                 <button className="btn btn-dark d-inline ml-1" onClick={logout}>Logout</button>
             </div>
             <div id="list" className="container">
-                <Input handleData={handleData} />
-                <TodoList handleData={handleData} toDos={toDos} />
+                <Input />
+                <TodoList toDos={toDos} />
             </div>
         </div>
     )

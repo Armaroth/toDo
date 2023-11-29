@@ -4,7 +4,7 @@ const validateToken = require('../middleWare/auth.middleware.js')
 const userRouter = express.Router();
 userRouter.use(validateToken);
 
-userRouter.route("/")
+userRouter.route("/todos")
     .get(async (req, res) => {
         try {
             const user = res.locals.user;
@@ -53,6 +53,12 @@ userRouter.route("/")
         }
     })
 
+userRouter.put('/todos/check', async (req, res) => {
+    const { payload } = req.body;
+    const query = 'UPDATE todo SET completed = $1 WHERE todo_id = $2 ;'
+    await runQuery(query, [!payload.completed, payload.toDo_id])
+    return res.send('Todo was checked.');
+})
 userRouter.route("/archived")
     .get(async (req, res) => {
         try {

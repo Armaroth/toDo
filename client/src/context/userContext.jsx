@@ -27,9 +27,8 @@ export function UserProvider({ children }) {
                 setError(error);
             }
             else {
-                const { accessToken, refreshToken } = await response.json();
+                const { accessToken } = await response.json();
                 localStorage.setItem('token', JSON.stringify(accessToken));
-                localStorage.setItem('refreshToken', JSON.stringify(refreshToken));
                 setToken(accessToken);
                 refetch();
                 archivedRefetch();
@@ -47,9 +46,9 @@ export function UserProvider({ children }) {
                 body: JSON.stringify({ email: credentials.email, password: credentials.password })
             })
             if (response.ok) {
-                const { accessToken, refreshToken } = await response.json();
+                const { accessToken } = await response.json();
                 localStorage.setItem('token', JSON.stringify(accessToken));
-                localStorage.setItem('refreshToken', JSON.stringify(refreshToken));
+
                 setToken(accessToken);
                 refetch();
                 archivedRefetch();

@@ -1,13 +1,13 @@
 const express = require("express");
 const cors = require('cors');
 const app = express();
-const userRouter = require('./routes/user.router.js');
-const authRouter = require('./routes/auth.router.js');
 require('dotenv').config();
 const { seedDatabase } = require('./db/db.js');
 
 seedDatabase();
 
+const userRouter = require('./routes/user.router.js');
+const authRouter = require('./routes/auth.router.js');
 app.use(cors());
 app.use(express.json());
 app.use('/user', userRouter);

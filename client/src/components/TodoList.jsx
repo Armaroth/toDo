@@ -4,7 +4,7 @@ import './styles/TodoList.css'
 export function TodoList({ toDos }) {
     const { status, isFetching } = useContext(ToDoContext)
     const [description, setDescription] = useState('');
-    const { deleteMutation, editMutation, postArchivedMutation } = useContext(ToDoContext);
+    const { deleteMutation, editMutation, postArchivedMutation, checkBoxMutation } = useContext(ToDoContext);
     async function onClickEdit(description, id) {
         if (!description) return;
         editMutation.mutate({ description, id })
@@ -14,6 +14,12 @@ export function TodoList({ toDos }) {
         await postArchivedMutation.mutate(id);
         deleteMutation.mutate(id);
     }
+
+    async function onCheckBoxChange(toDo) {
+        await checkBoxMutation.mutate({ toDo_id: toDo.todo_id, completed: toDo.completed });
+        queryCLient.invalidateQueries(['todos'])
+    }
+
     if (status == 'pending' || isFetching) {
         return <h1 className="text-center mt-5 bg-light">Loading...</h1>
     }
@@ -28,7 +34,8 @@ export function TodoList({ toDos }) {
                             {/* check box */}
                             <div className="align-self-end d-flex">
                                 <div className="form-check my-2">
-                                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                                    <input className="form-check-input" type="checkbox" checked={toDo.completed}
+                                        onChange={() => onCheckBoxChange(toDo)} id="flexCheckDefault" />
                                 </div>
 
                                 {/* edit button */}

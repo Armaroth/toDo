@@ -38,6 +38,9 @@ async function saveUser(user) {
   if (isDuplicate) {
     return { error: "Email already exists", code: 409 }
   }
+  if (!process.env.JWT_ACCESS_KEY || !process.env.JWT_REFRESH_KEY) {
+    return { error: 'No secret key. Shuttting down', code: 500 }
+  }
   const query = ` INSERT INTO "user" ("username","password","email") VALUES ($1,$2,$3) RETURNING id`;
   const res = await runQuery(query, [user.username, user.password, user.email]);
   if (res.error) {
