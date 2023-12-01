@@ -1,4 +1,4 @@
-const getTokenForUser = require('../utils/user.utils');
+const { getTokenForUser } = require('../utils/user.utils');
 const LocalStrategy = require('passport-local').Strategy;
 const { verifyUser } = require('../db/user.store');
 
@@ -10,5 +10,4 @@ function initialize(passport) {
   }
   passport.use(new LocalStrategy({ usernameField: 'email' }, authenticate))
 }
-
-module.exports = initialize; 
+module.exports = initialize;  

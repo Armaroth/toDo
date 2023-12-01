@@ -20,7 +20,6 @@ export function Login() {
     async function handleSubmit(e) {
         e.preventDefault();
         loginMutation.mutate({ email, password });
-
     }
     return (
         <>

@@ -1,9 +1,8 @@
+require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
-const app = express();
-require('dotenv').config();
 const { seedDatabase } = require('./db/db.js');
-
+const app = express();
 seedDatabase();
 
 const userRouter = require('./routes/user.router.js');
@@ -13,6 +12,5 @@ app.use(express.json());
 app.use('/user', userRouter);
 app.use('/auth', authRouter);
 
-const port = 4000;
-
+const port = process.env.PORT;
 app.listen(port, () => console.log(`listening on port:${port}`));

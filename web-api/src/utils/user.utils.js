@@ -1,3 +1,4 @@
+const { runQuery } = require('../db/db.js');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -7,12 +8,13 @@ function getTokenForUser(user, secret, type) {
 }
 function getTokenExpiresIn(type) {
   if (type === "access") {
-    return process.env['TOKEN_EXPIRES_IN'] || '5s';
+    return process.env['TOKEN_EXPIRES_IN'] || '15m';
   } else {
     return '3d';
   }
-
 }
-
-
-module.exports = getTokenForUser
+async function saveRefreshToken(token, id) {
+  const query = 'UPDATE "user" SET refresh_token = $1 WHERE id = $2 ;'
+  await runQuery(query, [token, id]);
+}
+module.exports = { getTokenForUser, saveRefreshToken }

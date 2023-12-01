@@ -3,7 +3,7 @@ import { ToDoContext } from "../context/todoContext";
 
 
 
-export function Input() {
+export function CreateTodos() {
 
     const [value, setValue] = useState('');
     const { postMutation } = useContext(ToDoContext);

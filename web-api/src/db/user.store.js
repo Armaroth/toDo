@@ -1,6 +1,7 @@
 const { runQuery } = require('./db');
 const compare = require('bcrypt').compare;
 
+
 async function searchForUser(email) {
   const query = `SELECT * FROM "user" WHERE email = $1;`
   const res = await runQuery(query, [email]);
@@ -10,36 +11,29 @@ async function searchForUser(email) {
   if (res.data.rows.length === 0) {
     return null;
   }
-  return { data: res.data.rows[0] };
+  return res.data.rows[0];
 }
-
 async function getUserByEmail(email) {
   const search = await searchForUser(email);
   if (!search) {
-
-    return { error: 'user not found' };
+    return { error: 'user does not exist' };
   }
-  return { data: search.data };
+  return { data: search };
 }
-
 async function verifyUser(email, password) {
   const res = await getUserByEmail(email);
+  if (res.error) {
+    return res.error;
+  }
   if (res.data) {
     const user = res.data;
-    if (!user) return 'users does not exist';
     return await compare(password, user.password) ? user : 'Incorrect Password';
-
   }
-  return res.error;
 }
-
 async function saveUser(user) {
   const isDuplicate = await searchForUser(user.email);
   if (isDuplicate) {
     return { error: "Email already exists", code: 409 }
-  }
-  if (!process.env.JWT_ACCESS_KEY || !process.env.JWT_REFRESH_KEY) {
-    return { error: 'No secret key. Shuttting down', code: 500 }
   }
   const query = ` INSERT INTO "user" ("username","password","email") VALUES ($1,$2,$3) RETURNING id`;
   const res = await runQuery(query, [user.username, user.password, user.email]);
@@ -48,6 +42,5 @@ async function saveUser(user) {
   }
   return { data: res.data.rows[0].id }
 }
-
 module.exports = { getUserByEmail, verifyUser, saveUser };
 

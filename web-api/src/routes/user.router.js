@@ -1,6 +1,6 @@
 const express = require('express');
-const { runQuery } = require('../db/db.js');
 const validateToken = require('../middleWare/auth.middleware.js')
+const { runQuery } = require('../db/db.js');
 const userRouter = express.Router();
 userRouter.use(validateToken);
 
@@ -51,14 +51,13 @@ userRouter.route("/todos")
         catch (error) {
             console.error(error);
         }
-    })
-
+    });
 userRouter.put('/todos/check', async (req, res) => {
     const { payload } = req.body;
     const query = 'UPDATE todo SET completed = $1 WHERE todo_id = $2 ;'
     await runQuery(query, [!payload.completed, payload.toDo_id])
     return res.send('Todo was checked.');
-})
+});
 userRouter.route("/archived")
     .get(async (req, res) => {
         try {
@@ -98,7 +97,6 @@ userRouter.route("/archived")
         catch (error) {
             console.error(error);
         }
-    })
-
+    });
 module.exports = userRouter;
 

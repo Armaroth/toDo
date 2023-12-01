@@ -1,17 +1,18 @@
 const express = require('express');
+const initialize = require('../middleWare/passport-config.js');
+const { getTokenForUser, saveRefreshToken } = require('../utils/user.utils.js');
+const { saveUser } = require('../db/user.store.js');
+const { runQuery } = require('../db/db.js');
+const checkEnvVariables = require('../middleWare/checkEnvVariables.middleware.js')
 const bcrypt = require('bcrypt');
 const authRouter = express.Router();
-const initialize = require('../middleWare/passport-config.js');
 const passport = require('passport');
-const { saveUser } = require('../db/user.store.js');
-const getTokenForUser = require('../utils/user.utils.js');
 const jwt = require('jsonwebtoken');
-const { runQuery } = require('../db/db.js');
-
-
+authRouter.use(checkEnvVariables);
 initialize(passport);
 
 authRouter.post('/login', async (req, res) => {
+    if (res?.error) return res.status(400).send(res?.error);
     const { email, password } = req.body;
     if (!email || !password) {
         return res.status(400).send('Missing Credentials');
@@ -19,13 +20,12 @@ authRouter.post('/login', async (req, res) => {
     passport.authenticate('local', async (err, result) => {
         if (err) return res.status(err.code).send(err.message);
         const { accessToken, refreshToken, id } = result;
-        const query = 'UPDATE "user" SET refresh_token = $1 WHERE id = $2 ;'
-        await runQuery(query, [refreshToken, id]);
+        saveRefreshToken(refreshToken, id);
         return res.json({ accessToken });
     })(req, res)
 });
-
 authRouter.post('/register', async (req, res) => {
+    if (res?.error) return res.status(400).send(res?.error);
     try {
         const { email, username, password } = req.body;
         if (!email || !username || !password) {
@@ -46,22 +46,19 @@ authRouter.post('/register', async (req, res) => {
         user.id = result.data;
         const accessToken = getTokenForUser(user, process.env.JWT_ACCESS_KEY);
         const refreshToken = getTokenForUser(user, process.env.JWT_REFRESH_KEY);
-        const query = 'UPDATE "user" SET refresh_token = $1 WHERE id = $2 ;'
-        await runQuery(query, [refreshToken, user.id]);
+        saveRefreshToken(refreshToken, user.id);
         return res.json({ accessToken });
     }
     catch (error) {
         console.error(error);
     }
 })
-
 authRouter.delete('/logout', async (req, res) => {
     const { id } = req.body;
     const query = 'UPDATE "user" SET refresh_token = $1 WHERE id = $2 ;'
     await runQuery(query, [null, id]);
     return res.sendStatus(200);
 })
-
 authRouter.post('/refresh', async (req, res) => {
     const { id } = req.body;
     const result = await runQuery(`SELECT refresh_token FROM "user" WHERE id = $1 ;`, [id])
@@ -79,5 +76,4 @@ authRouter.post('/refresh', async (req, res) => {
         return res.sendStatus(401);
     }
 })
-
 module.exports = authRouter;

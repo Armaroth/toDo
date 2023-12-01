@@ -1,5 +1,5 @@
 import { TodoList } from "../components/TodoList";
-import { Input } from "../components/Input";
+import { CreateTodos } from "../components/CreateTodos";
 import { ArchivedToDos } from '../components/ArchivedTodos'
 import { useEffect, useContext } from "react";
 import { UserContext } from "../context/userContext";
@@ -12,6 +12,8 @@ import "./styles/dashboard.css";
 export function Dashboard() {
     const { data, status, isFetching } = useContext(ToDoContext);
     const { token, currentUser, setCurrentUser, toDos, setToDos, logout } = useContext(UserContext);
+
+
     async function handleData() {
         setToDos(() => data)
     }
@@ -31,7 +33,7 @@ export function Dashboard() {
                 <button className="btn btn-dark d-inline ml-1" onClick={logout}>Logout</button>
             </div>
             <div id="list" className="container">
-                <Input />
+                <CreateTodos />
                 <TodoList toDos={toDos} />
             </div>
         </div>
