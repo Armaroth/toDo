@@ -13,7 +13,7 @@ export function ToDoProvider({ children }) {
     const { data, status, isFetching, refetch } = useQuery({
         queryKey: ['todos'],
         queryFn: async () => {
-            return fetchWithAuth('http://localhost:4000/user').then(data => data.json());
+            return fetchWithAuth('http://localhost:4000/user/todos').then(data => data.json());
         }
     });
 
@@ -29,7 +29,7 @@ export function ToDoProvider({ children }) {
 
     //todos
     const postMutation = useMutation({
-        mutationFn: (value) => fetchWithAuth('http://localhost:4000/user', {
+        mutationFn: (value) => fetchWithAuth('http://localhost:4000/user/todos', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ export function ToDoProvider({ children }) {
 
     const deleteMutation = useMutation({
         mutationFn: (id) => {
-            fetchWithAuth('http://localhost:4000/user', {
+            fetchWithAuth('http://localhost:4000/user/todos', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ export function ToDoProvider({ children }) {
         }
     });
     const editMutation = useMutation({
-        mutationFn: (payload) => fetchWithAuth('http://localhost:4000/user', {
+        mutationFn: (payload) => fetchWithAuth('http://localhost:4000/user/todos', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -63,6 +63,19 @@ export function ToDoProvider({ children }) {
             body: JSON.stringify({ payload })
         }),
         onSuccess: () => queryCLient.invalidateQueries(['todos'])
+    });
+
+
+    const checkBoxMutation = useMutation({
+        mutationFn: (payload) => fetchWithAuth('http://localhost:4000/user/todos/check', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ payload })
+        }),
+        onSuccess: () => queryCLient.invalidateQueries(['todos'])
+
     });
 
     //archived todos
@@ -101,7 +114,7 @@ export function ToDoProvider({ children }) {
         , archivedIsFetching: archivedQuery.isFetching,
         refetchArhcived: archivedQuery.refetch,
         postArchivedMutation,
-        deleteArchivedMutation
+        deleteArchivedMutation, checkBoxMutation
     }
     return (
         <div>
