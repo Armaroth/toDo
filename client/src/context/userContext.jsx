@@ -1,11 +1,11 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createContext, useContext, useState } from 'react';
 import { ToDoContext } from './todoContext';
 import { decodeJwt } from "../auth.helpers";
 export const UserContext = createContext(null);
 
 export function UserProvider({ children }) {
-
+    const queryCLient = useQueryClient();
     const [toDos, setToDos] = useState([]);
     const [archivedToDos, setArchivedToDos] = useState([]);
     const [token, setToken] = useState(localStorage.getItem('token'));
@@ -47,7 +47,6 @@ export function UserProvider({ children }) {
             if (response.ok) {
                 const { accessToken } = await response.json();
                 localStorage.setItem('token', JSON.stringify(accessToken));
-
                 setToken(accessToken);
                 refetch();
                 archivedRefetch();
@@ -68,10 +67,13 @@ export function UserProvider({ children }) {
             },
             body: JSON.stringify({ id })
         })
-        localStorage.removeItem('token')
+        localStorage.removeItem('token');
         setToken('');
         setCurrentUser('')
-        setToDos([]);
+        setToDos(() => []);
+        queryCLient.invalidateQueries(['todos'])
+        queryCLient.invalidateQueries(['archivedTodos'])
+
     }
 
     const r = { token, error, currentUser, setCurrentUser, setToken, setError, registerMutation, loginMutation, logout, toDos, setToDos, archivedToDos, setArchivedToDos }

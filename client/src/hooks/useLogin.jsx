@@ -19,8 +19,6 @@ export function useLogin() {
             const { accessToken } = await response.json();
             localStorage.setItem('token', JSON.stringify(accessToken));
             setToken(accessToken);
-            refetch();
-            archivedRefetch();
         }, onError: async () => {
             const message = await response.text();
             setError(message);

@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
 import { ToDoContext } from "../context/todoContext";
 import './styles/TodoList.css'
+import { useToDos } from "../hooks";
 export function TodoList({ toDos }) {
-    const { status, isFetching } = useContext(ToDoContext)
+    // const toDoQuery = useToDos();
+    const { status } = useContext(ToDoContext)
     const [description, setDescription] = useState('');
     const { deleteMutation, editMutation, postArchivedMutation, checkBoxMutation } = useContext(ToDoContext);
     async function onClickEdit(description, id) {
@@ -20,7 +22,7 @@ export function TodoList({ toDos }) {
         queryCLient.invalidateQueries(['todos'])
     }
 
-    if (status == 'pending' || isFetching) {
+    if (status == 'pending') {
         return <h1 className="text-center mt-5 bg-light">Loading...</h1>
     }
 
