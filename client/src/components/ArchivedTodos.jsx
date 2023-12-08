@@ -39,7 +39,7 @@ export function ArchivedToDos() {
                                         <p className='h6 px-3'>
                                             {toDo.description}
                                         </p>
-                                        <div>
+                                        <div className=' d-flex flex-nowrap'>
                                             <button className="btn btn-success d-inline-block mx-1 p-2" onClick={async () => {
                                                 await postMutation.mutate(toDo.description);
                                                 deleteArchivedMutation.mutate(toDo.todo_id);
