@@ -19,12 +19,12 @@ export function Dashboard() {
         setToDos(() => data)
     }
     const queryCLient = useQueryClient();
-    useEffect(() => {
-        if (status === 'success' && !isFetching) {
-            setCurrentUser(decodeJwt(token).username);
-            setToDos(() => data);
-        }
-    }, [status, data])
+    // useEffect(() => {
+    //     if (status === 'success' && !isFetching) {
+    //         setCurrentUser(decodeJwt(token).username);
+    //         setToDos(() => data);
+    //     }
+    // }, [status, data])
 
     return (
         <div id="dashboard" >

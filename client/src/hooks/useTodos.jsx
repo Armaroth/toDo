@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { fetchWithAuth } from '../auth.helpers';
 
 export function useToDos() {
     const query = useQuery({
@@ -7,6 +8,5 @@ export function useToDos() {
             return fetchWithAuth('http://localhost:4000/user/todos').then(data => data.json());
         }
     });
-    console.log(query)
     return query;
 }

@@ -3,6 +3,7 @@ import { ToDoContext } from "../context/todoContext";
 import './styles/TodoList.css'
 import { useToDos } from "../hooks";
 import { EditModal } from './EditModal'
+import { UserContext } from "../context/userContext";
 export function TodoList() {
     const toDos = useToDos().data;
     const { status } = useToDos();
@@ -10,11 +11,11 @@ export function TodoList() {
 
     const [description, setDescription] = useState('');
 
-
+    const { currentUser } = useContext(UserContext)
 
     const { deleteMutation, editMutation, postArchivedMutation, checkBoxMutation } = useContext(ToDoContext);
 
-
+    // console.log(toDos, currentUser)
     async function onClickEdit(description, id) {
         if (!description) return;
         editMutation.mutate({ description, id })
@@ -30,7 +31,7 @@ export function TodoList() {
         queryCLient.invalidateQueries(['todos'])
     }
 
-    if (status == 'pending') {
+    if (status == 'pending' || currentUser !== toDos[0].user_id) {
         return <h1 className="text-center mt-5 bg-light">Loading...</h1>
     }
 

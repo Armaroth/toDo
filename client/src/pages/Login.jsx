@@ -2,24 +2,24 @@ import { useContext, useState, useEffect } from "react"
 import { Link } from 'react-router-dom'
 import { UserContext } from "../context/userContext";
 import './styles/login.css'
+import { useLogin } from "../hooks";
 
 export function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { loginMutation, error, setError } = useContext(UserContext);
-
+    const mutation = useLogin();
     useEffect(() => {
-        setInterval(() => {
-            if (error) {
-                setError(() => '')
-            }
+
+        if (error) {
+            setError(() => '')
         }
-            , '4000')
-    }, [error])
+
+    }, [email, password])
 
     async function handleSubmit(e) {
         e.preventDefault();
-        loginMutation.mutate({ email, password });
+        mutation.mutate({ email, password });
     }
     return (
         <>

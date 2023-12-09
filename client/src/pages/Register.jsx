@@ -10,13 +10,11 @@ export function Register() {
     const { error, setError, registerMutation } = useContext(UserContext);
 
     useEffect(() => {
-        setInterval(() => {
-            if (error) {
-                setError(() => '')
-            }
+        if (error) {
+            setError(() => '')
         }
-            , '4000')
-    }, [error])
+
+    }, [password, email, username])
 
     async function handleSubmit(e) {
         e.preventDefault();

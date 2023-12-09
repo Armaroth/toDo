@@ -3,9 +3,9 @@ import { useContext } from 'react';
 import { UserContext } from '../context/userContext';
 import { ToDoContext } from "../context/todoContext";
 
-export function useLogin() {
+export function use() {
     const { setToken, setError } = useContext(UserContext);
-    // const { refetch, archivedRefetch } = useContext(ToDoContext);
+    const { refetch, archivedRefetch } = useContext(ToDoContext);
     const mutation = useMutation({
         mutationFn: async (credentials) => {
             const response = await fetch(`http://localhost:4000/auth/register`, {
