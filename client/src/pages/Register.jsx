@@ -1,13 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/userContext";
+import { useRegister } from '../hooks'
 import "./styles/register.css"
 
 export function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const { error, setError, registerMutation } = useContext(UserContext);
+    const mutation = useRegister();
+    const { error, setError } = useContext(UserContext);
 
     useEffect(() => {
         if (error) {
@@ -18,7 +20,7 @@ export function Register() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        registerMutation.mutate({ email, password, username });
+        mutation.mutate({ email, password, username });
     }
     return (
         <div id="container" className="container justify-content-center mt-5 text-center">

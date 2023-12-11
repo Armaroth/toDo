@@ -7,14 +7,13 @@ import { useLogin } from "../hooks";
 export function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { loginMutation, error, setError } = useContext(UserContext);
+    const { error, setError } = useContext(UserContext);
     const mutation = useLogin();
-    useEffect(() => {
 
+    useEffect(() => {
         if (error) {
             setError(() => '')
         }
-
     }, [email, password])
 
     async function handleSubmit(e) {

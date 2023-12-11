@@ -10,20 +10,20 @@ export function ToDoProvider({ children }) {
     //*******************************************************************QUERIES*******************************************************************************
 
     //todos
-    const { data, status, isFetching, refetch } = useQuery({
-        queryKey: ['todos'],
-        queryFn: async () => {
-            return fetchWithAuth('http://localhost:4000/user/todos').then(data => data.json());
-        }
-    });
+    // const { data, status, isFetching, refetch } = useQuery({
+    //     queryKey: ['todos'],
+    //     queryFn: async () => {
+    //         return fetchWithAuth('http://localhost:4000/user/todos').then(data => data.json());
+    //     }
+    // });
 
-    //archived todos
-    const archivedQuery = useQuery({
-        queryKey: ['archivedTodos'],
-        queryFn: async () => {
-            return fetchWithAuth('http://localhost:4000/user/archived').then(data => data.json());
-        }
-    });
+    // //archived todos
+    // const archivedQuery = useQuery({
+    //     queryKey: ['archivedTodos'],
+    //     queryFn: async () => {
+    //         return fetchWithAuth('http://localhost:4000/user/archived').then(data => data.json());
+    //     }
+    // });
 
     //*******************************************************************MUTATIONS*******************************************************************************
 
@@ -108,11 +108,7 @@ export function ToDoProvider({ children }) {
     });
 
     const r = {
-        data, status, isFetching, refetch, postMutation, deleteMutation, editMutation,
-        archivedData: archivedQuery.data
-        , archivedStatus: archivedQuery.status
-        , archivedIsFetching: archivedQuery.isFetching,
-        refetchArhcived: archivedQuery.refetch,
+        postMutation, deleteMutation, editMutation,
         postArchivedMutation,
         deleteArchivedMutation, checkBoxMutation
     }
