@@ -1,16 +1,14 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createContext, useContext, useEffect, useState } from 'react';
-import { ToDoContext } from './todoContext';
+import { useQueryClient } from '@tanstack/react-query';
+import { createContext, useEffect, useState } from 'react';
+
 import { decodeJwt } from "../auth.helpers";
 export const UserContext = createContext(null);
 
 export function UserProvider({ children }) {
     const queryCLient = useQueryClient();
-    const [toDos, setToDos] = useState([]);
-    const [archivedToDos, setArchivedToDos] = useState([]);
     const [token, setToken] = useState(localStorage.getItem('token'));
-    const [error, setError] = useState('');
     const [currentUser, setCurrentUser] = useState({});
+
     useEffect(() => {
         if (token) {
             setCurrentUser({ userName: decodeJwt(token).username, id: decodeJwt(token).id })
@@ -19,8 +17,6 @@ export function UserProvider({ children }) {
         }
 
     }, [token])
-    // const currentUser = token ? { userName: decodeJwt(token).username, id: decodeJwt(token).id } : {}
-    const { refetch, archivedRefetch } = useContext(ToDoContext);
 
     async function logout() {
         const id = decodeJwt(token).id;
@@ -36,10 +32,8 @@ export function UserProvider({ children }) {
         setToDos(() => []);
         queryCLient.invalidateQueries(['todos'])
         queryCLient.invalidateQueries(['archivedTodos'])
-
     }
-
-    const r = { token, error, currentUser, setToken, setError, logout, toDos, setToDos, archivedToDos, setArchivedToDos }
+    const r = { token, currentUser, setToken, logout, }
     return <UserContext.Provider value={r}>
         {children}
     </UserContext.Provider>;

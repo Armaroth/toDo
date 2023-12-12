@@ -1,24 +1,26 @@
-import { useContext, useRef, useState, useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useNewTodo } from '../hooks'
-
 
 export function CreateTodos() {
     const mutation = useNewTodo();
-    const [value, setValue] = useState('');
+    const inputRef = useRef();
+
+    useEffect(() => {
+        inputRef.current.focus();
+    }, [])
 
     async function onSubmitForm(e) {
         e.preventDefault();
-        mutation.mutate(value);
-        setValue('');
+        const value = inputRef.current.value;
+        inputRef.current.value = '';
+        await mutation.mutateAsync(value);
     }
-
     return (
         <>
             <div className="mt-5 container" id="inputTodo">
                 <h1 className="text-center">ToDO list</h1>
                 <form className="d-flex mt-5" onSubmit={onSubmitForm}>
-                    <input className="form-control" value={value}
-                        onChange={(e) => setValue(e.target.value)} />
+                    <input className="form-control" ref={inputRef} />
                     <button className="btn btn-primary" >Add</button>
                 </form>
             </div>
