@@ -1,10 +1,10 @@
 import { useState, useRef, useContext } from "react";
 import './styles/TodoList.css'
-import { ToDoContext } from "../context/todoContext";
+import { useEditTodo } from "../hooks";
 export function EditModal({ toDo }) {
     const [description, setDescription] = useState('');
     const inputRef = useRef();
-    const { editMutation } = useContext(ToDoContext);
+    const editMutation = useEditTodo();
     async function onClickEdit(description, id) {
         if (!description) return;
         editMutation.mutate({ description, id })

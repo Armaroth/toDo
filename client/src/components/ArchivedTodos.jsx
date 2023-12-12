@@ -1,18 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import './styles/ArchivedTodos.css'
-import { useContext } from 'react'
-
-import { ToDoContext } from '../context/todoContext';
+import { ArchivedTodosModalContent } from './ArchivedTodosModalContent';
 import { useArchivedToDos } from '../hooks'
-import { UserContext } from '../context/userContext';
 import { ArchivedTodosButton } from './ArchivedTodosButton';
-import { ArchivedTodosModal } from './ArchivedTodosModal';
+import { ArchivedTodosModalContainer } from './ArchivedTodosModalContainer';
 
 export function ArchivedToDos() {
     const [show, setShow] = useState(false);
     const { data, status } = useArchivedToDos();
-    const { postMutation, deleteArchivedMutation } = useContext(ToDoContext);
-    const { currentUser } = useContext(UserContext)
 
     function toggleModal() {
         setShow(() => true)
@@ -20,7 +15,9 @@ export function ArchivedToDos() {
     return (
         <>
             <ArchivedTodosButton toggle={toggleModal} />
-            <ArchivedTodosModal show={show} setShow={setShow} />
+            <ArchivedTodosModalContainer show={show} setShow={setShow}>
+                <ArchivedTodosModalContent todos={data} status={status} />
+            </ArchivedTodosModalContainer>
         </>
     )
 }

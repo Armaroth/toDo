@@ -52,12 +52,18 @@ userRouter.route("/todos")
             console.error(error);
         }
     });
+
 userRouter.put('/todos/check', async (req, res) => {
     const { payload } = req.body;
     const query = 'UPDATE todo SET completed = $1 WHERE todo_id = $2 ;'
     await runQuery(query, [!payload.completed, payload.toDo_id])
     return res.send('Todo was checked.');
 });
+// ********************************************************************************************************************************************************************************
+// ********************************************************************************************************************************************************************************
+//**********************************************************************************Archived***************************************************************************************
+// ********************************************************************************************************************************************************************************
+// ********************************************************************************************************************************************************************************
 userRouter.route("/archived")
     .get(async (req, res) => {
         try {
@@ -75,13 +81,18 @@ userRouter.route("/archived")
     .post(async (req, res) => {
         try {
             const user = res.locals.user;
-            const id = req.body.value;
+            const { id } = req.body;
             const descQuery = `SELECT description FROM todo WHERE todo_id = ($1) ;`;
             const value = await runQuery(descQuery, [id]);
-            const description = value.data.rows[0].description;
-            const query = ` INSERT INTO archivedtodo (description,user_id) VALUES ($1,$2);`
-            const result = await runQuery(query, [description, user.id]);
-            return res.send(result.data);
+            const description = value?.data?.rows[0]?.description;
+            if (description) {
+                // console.log('in')
+                const query = ` INSERT INTO archivedtodo (description,user_id) VALUES ($1,$2);`
+                const result = await runQuery(query, [description, user.id]);
+                return res.send(true);
+            }
+            return res.send(false)
+
         }
         catch (error) {
             console.error(error);

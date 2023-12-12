@@ -1,6 +1,5 @@
-import { useContext, useRef, useState, useEffect } from "react"
+import { useState } from "react"
 import { useNewTodo } from '../hooks'
-
 
 export function CreateTodos() {
     const mutation = useNewTodo();
@@ -8,10 +7,9 @@ export function CreateTodos() {
 
     async function onSubmitForm(e) {
         e.preventDefault();
-        mutation.mutate(value);
+        await mutation.mutateAsync(value);
         setValue('');
     }
-
     return (
         <>
             <div className="mt-5 container" id="inputTodo">

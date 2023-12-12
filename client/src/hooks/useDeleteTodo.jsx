@@ -1,24 +1,22 @@
 import { fetchWithAuth } from "../auth.helpers";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export function useNewTodo() {
+export function useDeleteTodo() {
     const queryCLient = useQueryClient();
 
     const mutation = useMutation({
-        mutationFn: (value) => {
-            if (!value) {
-                return
-            }
-            return fetchWithAuth('http://localhost:4000/user/todos', {
-                method: 'POST',
+        mutationFn: ({ id, table }) => {
+            return fetchWithAuth(`http://localhost:4000/user/${table}`, {
+                method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ value })
+                body: JSON.stringify({ id })
             }).then(data => data.json());
-
         },
-        onSuccess: () => queryCLient.invalidateQueries(['todos'])
+        onSuccess: async () => {
+            await queryCLient.invalidateQueries(['todos']);
+        }
     });
     return mutation;
 }
