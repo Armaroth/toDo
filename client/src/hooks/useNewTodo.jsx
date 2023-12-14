@@ -2,6 +2,7 @@ import { fetchWithAuth } from "../auth.helpers";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 export function useNewTodo() {
     const queryCLient = useQueryClient();
+
     const mutation = useMutation({
         mutationFn: (value) => {
             if (!value) {

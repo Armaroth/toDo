@@ -6,7 +6,6 @@ export function EditModal({ toDo }) {
     const [description, setDescription] = useState('');
     const inputRef = useRef();
     const editMutation = useEditTodo();
-
     async function onClickEdit(description, id) {
         if (!description) return;
         editMutation.mutate({ description, id })
