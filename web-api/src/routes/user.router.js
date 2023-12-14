@@ -86,7 +86,6 @@ userRouter.route("/archived")
             const value = await runQuery(descQuery, [id]);
             const description = value?.data?.rows[0]?.description;
             if (description) {
-                // console.log('in')
                 const query = ` INSERT INTO archivedtodo (description,user_id) VALUES ($1,$2);`
                 const result = await runQuery(query, [description, user.id]);
                 return res.send(true);

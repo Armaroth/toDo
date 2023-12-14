@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
 import { useContext } from "react";
 import { UserContext } from "../context/userContext";
 export function useLogout() {
@@ -7,39 +6,19 @@ export function useLogout() {
     const queryCLient = useQueryClient();
 
     const mutation = useMutation({
-        mutationFn: (id) => {
-            return fetch(`http://localhost:4000/auth/logout`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id })
-            })
-        },
+        mutationFn: async (id) => await fetch(`http://localhost:4000/auth/logout`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id })
+        }),
         onSuccess: async () => {
-            await queryCLient.cancelQueries(['todos']);
-            await queryCLient.cancelQueries(['archivedTodos']);
+            await queryCLient.cancelQueries({ queryKey: ['todos'] });
+            await queryCLient.cancelQueries({ queryKey: ['archivedTodos'] });
             localStorage.removeItem('token');
             setToken('');
         }
     });
     return mutation;
 }
-
-
-
-// async function logout() {
-//     const id = decodeJwt(token).id;
-//     const response = await fetch(`http://localhost:4000/auth/logout`, {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ id })
-//     })
-//     localStorage.removeItem('token');
-//     setToken('');
-//     setToDos(() => []);
-//     queryCLient.cancelQueries(['todos'])
-//     queryCLient.cancelQueries(['archivedTodos'])
-// }

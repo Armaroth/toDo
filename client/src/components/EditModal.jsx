@@ -2,9 +2,11 @@ import { useState, useRef, useContext } from "react";
 import './styles/TodoList.css'
 import { useEditTodo } from "../hooks";
 export function EditModal({ toDo }) {
+
     const [description, setDescription] = useState('');
     const inputRef = useRef();
     const editMutation = useEditTodo();
+
     async function onClickEdit(description, id) {
         if (!description) return;
         editMutation.mutate({ description, id })
@@ -13,12 +15,12 @@ export function EditModal({ toDo }) {
     return (
         <>
             {/* edit button */}
-            <button type="button" className="btn btn-warning d-inline-block " data-bs-toggle="modal"
+            <button type="button" className="btn btn-warning d-inline-block border-secondary px-4" data-bs-toggle="modal"
                 data-bs-target={`#modal${toDo.todo_id}`}
                 onClick={() => {
-                    inputRef.current.focus();
-                    setDescription(toDo.description);
 
+                    setDescription(toDo.description);
+                    inputRef.current.focus();
                 }}>
                 Edit
             </button>
@@ -35,7 +37,7 @@ export function EditModal({ toDo }) {
                             </button>
                         </div>
                         <div className="modal-body">
-                            <input ref={inputRef} className="form-control" value={description}
+                            <input ref={inputRef} className="form-control shadow-none border border-secondary p-1 m-0" value={description}
                                 onChange={e => setDescription(e.target.value)} type="text" />
                         </div>
                         <div className="modal-footer">

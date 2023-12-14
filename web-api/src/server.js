@@ -1,9 +1,10 @@
 require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
-const { seedDatabase } = require('./db/db.js');
+const { pool, seedDatabase } = require('./db/db.js');
 const app = express();
-seedDatabase();
+if (pool) seedDatabase();
+
 
 const userRouter = require('./routes/user.router.js');
 const authRouter = require('./routes/auth.router.js');

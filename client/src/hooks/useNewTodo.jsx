@@ -1,9 +1,7 @@
 import { fetchWithAuth } from "../auth.helpers";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
 export function useNewTodo() {
     const queryCLient = useQueryClient();
-
     const mutation = useMutation({
         mutationFn: (value) => {
             if (!value) {
@@ -16,9 +14,8 @@ export function useNewTodo() {
                 },
                 body: JSON.stringify({ value })
             }).then(data => data.json());
-
         },
-        onSuccess: () => queryCLient.invalidateQueries(['todos'])
+        onSuccess: async () => await queryCLient.invalidateQueries({ queryKey: ['todos'] })
     });
     return mutation;
 }

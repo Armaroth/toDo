@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { UserContext } from '../context/userContext';
-
 export function useRegister() {
     const { setToken, setError } = useContext(UserContext);
     const mutation = useMutation({
