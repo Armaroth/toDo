@@ -8,7 +8,7 @@ export function UserProvider({ children }) {
     const queryCLient = useQueryClient();
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [currentUser, setCurrentUser] = useState({});
-
+    const [error, setError] = useState('');
     useEffect(() => {
         if (token) {
             setCurrentUser({ userName: decodeJwt(token).username, id: decodeJwt(token).id })
@@ -33,7 +33,7 @@ export function UserProvider({ children }) {
         queryCLient.invalidateQueries(['todos'])
         queryCLient.invalidateQueries(['archivedTodos'])
     }
-    const r = { token, currentUser, setToken, logout, }
+    const r = { token, currentUser, setToken, logout, error, setError }
     return <UserContext.Provider value={r}>
         {children}
     </UserContext.Provider>;

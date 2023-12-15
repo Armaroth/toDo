@@ -26,10 +26,18 @@ authRouter.post('/login', async (req, res) => {
 });
 authRouter.post('/register', async (req, res) => {
     if (res?.error) return res.status(400).send(res?.error);
+    const patterns = {
+        username: /^[a-z\d]{5,12}$/i,
+        email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
+        password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#-_]).{8,20}$/
+    }
     try {
         const { email, username, password } = req.body;
         if (!email || !username || !password) {
-            return res.status(400).send('Missing credentials');
+            return res.status(400).send('Missing credentials.');
+        }
+        if (!patterns.email.test(email) || !patterns.username.test(username) || !patterns.password.test(password)) {
+            return res.status(400).send(`Credentials don't meet the criteria.`);
         }
         let saltRounds = Number(process.env['SALT_ROUNDS']);
         if (!saltRounds) {

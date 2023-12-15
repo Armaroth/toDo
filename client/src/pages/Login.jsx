@@ -37,7 +37,7 @@ export function Login() {
                         <button type="submit" className="btn btn-primary"
                         > Login</button>
                     </div>
-                    {error && <span>{error}</span>}
+                    {error && <span className="h6">{error}</span>}
                 </form>
                 <h2 className="mt-5 h3">
                     Are you new?
