@@ -1,6 +1,5 @@
 import jwt_decode from 'jwt-decode';
-import { useQueryClient } from '@tanstack/react-query';
-export function fetchWithAuth(url, options = {}) {
+export async function fetchWithAuth(url, options = {}) {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('token does not exist');
     return fetch(url, {
@@ -14,7 +13,6 @@ export function fetchWithAuth(url, options = {}) {
             const decoded = decodeJwt(token);
             const exp = decoded.exp;
             if (token && (exp * 1000 <= Date.now())) {
-
                 refreshToken(url, options);
             } else {
                 localStorage.removeItem('token');
@@ -44,10 +42,6 @@ function refreshToken(url, options) {
             const { accessToken } = r;
             localStorage.setItem('token', JSON.stringify(accessToken));
             fetchWithAuth(url, options);
-            const queryClient = useQueryClient();
-            queryClient.invalidateQueries();
-
-
         } else {
             localStorage.removeItem('token');
             window.location.href = window.origin + '/login'
