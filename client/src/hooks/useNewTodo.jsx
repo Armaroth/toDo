@@ -13,7 +13,8 @@ export function useNewTodo() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ value })
+                body: JSON.stringify({ value }),
+                credentials: 'include'
             }).then(data => data.json());
         },
         onSuccess: async () => await queryCLient.invalidateQueries({ queryKey: ['todos'] })

@@ -10,7 +10,8 @@ export function useLogin() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email: credentials.email, password: credentials.password })
+                body: JSON.stringify({ email: credentials.email, password: credentials.password }),
+                credentials: 'include'
             })
             if (response.ok) {
                 const { accessToken } = await response.json()

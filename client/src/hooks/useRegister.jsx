@@ -11,6 +11,7 @@ export function useRegister() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ email: credentials.email, username: credentials.username, password: credentials.password })
+                , credentials: 'include'
             })
             if (response.ok) {
                 const { accessToken } = await response.json()

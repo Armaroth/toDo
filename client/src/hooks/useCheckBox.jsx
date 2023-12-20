@@ -8,8 +8,9 @@ export function useCheckBox() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ payload })
-        }),
+            body: JSON.stringify({ payload }), credentials: 'include'
+        }
+        ),
         onSuccess: () => queryCLient.invalidateQueries({ queryKey: ['todos'] })
     });
     return mutation;
