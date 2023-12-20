@@ -4,7 +4,7 @@ export function useToDos() {
     const query = useQuery({
         queryKey: ['todos'],
         queryFn: async () => {
-            return fetchWithAuth('http://localhost:4000/user/todos').then(data => data.json());
+            return fetchWithAuth('http://localhost:4000/user/todos', { credentials: 'include' }).then(data => data.json());
         }
     });
     return query;

@@ -11,7 +11,8 @@ export function useArchiveTodo() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ id })
+                body: JSON.stringify({ id }), credentials: 'include'
+
             }).then(data => data.json());
         },
         onSuccess: async () => {

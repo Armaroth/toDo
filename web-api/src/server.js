@@ -3,13 +3,15 @@ const express = require("express");
 const cors = require('cors');
 const { pool, seedDatabase } = require('./db/db.js');
 const app = express();
+const cookieParser = require('cookie-parser');
 if (pool) seedDatabase();
-
+app.use(cors({ origin: "http://localhost:5173", credentials: true, }));
 
 const userRouter = require('./routes/user.router.js');
 const authRouter = require('./routes/auth.router.js');
-app.use(cors());
+
 app.use(express.json());
+app.use(cookieParser());
 app.use('/user', userRouter);
 app.use('/auth', authRouter);
 

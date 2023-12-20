@@ -6,7 +6,6 @@ export function CreateTodos() {
     const mutation = useNewTodo();
     const inputRef = useRef();
     const { currentUser } = useContext(UserContext);
-
     useEffect(() => {
         inputRef.current.focus();
     }, [])
@@ -22,7 +21,7 @@ export function CreateTodos() {
         <>
             <div className="mt-5 container justify-content-center" id="inputTodo">
                 <header className="d-flex justify-content-center">
-                    <h1 className="text-center border border-secondary bg-light rounded-pill h4 w-50 py-2">{`${currentUser.userName}'s `}To-do list</h1>
+                    <h1 className="text-center border border-secondary bg-light rounded-pill h4 w-50 py-2">{`${currentUser?.username}'s `}To-do list</h1>
                 </header>
                 <form className="d-flex mt-5" onSubmit={onSubmitForm}>
                     <input className="form-control shadow-none border-secondary border-end-0 rounded-0 rounded-start" ref={inputRef} />

@@ -10,7 +10,6 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 authRouter.use(checkEnvVariables);
 initialize(passport);
-
 authRouter.post('/login', async (req, res) => {
     if (res?.error) return res.status(400).send(res?.error);
     const { email, password } = req.body;
@@ -24,6 +23,7 @@ authRouter.post('/login', async (req, res) => {
         return res.json({ accessToken });
     })(req, res)
 });
+
 authRouter.post('/register', async (req, res) => {
     if (res?.error) return res.status(400).send(res?.error);
     const patterns = {
@@ -63,7 +63,7 @@ authRouter.post('/register', async (req, res) => {
 })
 authRouter.delete('/logout', async (req, res) => {
     const { id } = req.body;
-    const query = 'UPDATE "user" SET refresh_token = $1 WHERE id = $2 ;'
+    const query = 'UPDATE "user" SET refresh_token = $1 WHERE id = $2 ;';
     await runQuery(query, [null, id]);
     return res.sendStatus(200);
 })

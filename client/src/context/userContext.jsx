@@ -9,6 +9,8 @@ export function UserProvider({ children }) {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [currentUser, setCurrentUser] = useState({});
     const [error, setError] = useState('');
+    const [darkTheme, setDarkTheme] = useState(false);
+
     useEffect(() => {
         if (token) {
             setCurrentUser({ userName: decodeJwt(token).username, id: decodeJwt(token).id })

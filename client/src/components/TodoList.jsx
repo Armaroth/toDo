@@ -7,7 +7,7 @@ import { useToDos } from '../hooks';
 export function TodoList() {
     const { data, status } = useToDos();
     const { currentUser } = useContext(UserContext);
-    if (status == 'pending' || (data?.length && currentUser?.id !== data[0]?.user_id)) {
+    if (status === 'pending' || (data?.length && currentUser?.id !== data[0]?.user_id)) {
         return <h1 className="text-center mt-5 bg-light">Loading...</h1>
     };
     return (
