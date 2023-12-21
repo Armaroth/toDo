@@ -1,7 +1,7 @@
-import { useDeleteTodo, useNewTodo } from '../hooks'
+import { useDeleteTodo, useNewTodo } from '../../hooks'
 import { useContext } from 'react';
-import { UserContext } from '../context/userContext';
-import { Todo } from './Todo';
+import { UserContext } from '../../context/userContext';
+import { Todo } from '../Todo';
 export function ArchivedTodosModalContent({ todos, status }) {
 
     const { currentUser } = useContext(UserContext);

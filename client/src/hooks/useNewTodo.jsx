@@ -4,11 +4,11 @@ export function useNewTodo() {
     const queryCLient = useQueryClient();
 
     const mutation = useMutation({
-        mutationFn: (value) => {
+        mutationFn: async (value) => {
             if (!value) {
                 return
             }
-            return fetchWithAuth('http://localhost:4000/user/todos', {
+            return await fetchWithAuth('http://localhost:4000/user/todos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

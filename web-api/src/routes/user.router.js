@@ -108,5 +108,34 @@ userRouter.route("/archived")
             console.error(error);
         }
     });
+userRouter.route('/dark-mode')
+    .get(async (req, res) => {
+        try {
+            const { darkMode } = req.cookies;
+            if (darkMode === 'true') {
+                return res.send(true)
+            } else {
+                return res.send(false)
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    })
+    .put(async (req, res) => {
+        try {
+            const { darkMode } = req.cookies;
+            if (darkMode === 'true') {
+                res.cookie('darkMode', false, { httpOnly: true })
+            } else {
+                res.cookie('darkMode', true, { httpOnly: true })
+            }
+            return res.send('done');
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    )
 module.exports = userRouter;
 

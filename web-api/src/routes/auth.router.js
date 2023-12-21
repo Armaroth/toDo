@@ -3,13 +3,14 @@ const initialize = require('../middleWare/passport-config.js');
 const { getTokenForUser, saveRefreshToken } = require('../utils/user.utils.js');
 const { saveUser } = require('../db/user.store.js');
 const { runQuery } = require('../db/db.js');
-const checkEnvVariables = require('../middleWare/checkEnvVariables.middleware.js')
+const checkEnvVariables = require('../middleWare/checkEnvVariables.middleware.js');
 const bcrypt = require('bcrypt');
 const authRouter = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 authRouter.use(checkEnvVariables);
 initialize(passport);
+
 authRouter.post('/login', async (req, res) => {
     if (res?.error) return res.status(400).send(res?.error);
     const { email, password } = req.body;

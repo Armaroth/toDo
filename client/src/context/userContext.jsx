@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { createContext, useEffect, useState } from 'react';
-
-import { decodeJwt } from "../auth.helpers";
+import { useDarkMode } from '../hooks'
+import { decodeJwt } from '../auth.helpers';
 export const UserContext = createContext(null);
 
 export function UserProvider({ children }) {
@@ -9,8 +9,8 @@ export function UserProvider({ children }) {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [currentUser, setCurrentUser] = useState({});
     const [error, setError] = useState('');
-    const [darkTheme, setDarkTheme] = useState(false);
-
+    const darkTheme = useDarkMode();
+    // console.log(darkTheme.data)
     useEffect(() => {
         if (token) {
             setCurrentUser({ userName: decodeJwt(token).username, id: decodeJwt(token).id })

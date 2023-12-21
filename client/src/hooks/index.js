@@ -7,4 +7,6 @@ export * from './useDeleteTodo';
 export * from './useEditTodo';
 export * from './useCheckBox';
 export * from './useArchiveTodo';
-export * from './useLogout'
+export * from './useLogout';
+export * from './useDarkMode';
+export * from './useToggleDarkMode';

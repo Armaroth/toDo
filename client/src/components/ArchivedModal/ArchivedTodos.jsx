@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './styles/ArchivedTodos.css'
 import { ArchivedTodosModalContent } from './ArchivedTodosModalContent';
-import { useArchivedToDos } from '../hooks'
+import { useArchivedToDos } from '../../hooks'
 import { ArchivedTodosButton } from './ArchivedTodosButton';
 import { ArchivedTodosModalContainer } from './ArchivedTodosModalContainer';
 

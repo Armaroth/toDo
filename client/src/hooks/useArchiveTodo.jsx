@@ -5,8 +5,8 @@ export function useArchiveTodo() {
     const queryCLient = useQueryClient();
 
     const mutation = useMutation({
-        mutationFn: (id) => {
-            fetchWithAuth('http://localhost:4000/user/archived', {
+        mutationFn: async (id) => {
+            return await fetchWithAuth('http://localhost:4000/user/archived', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
