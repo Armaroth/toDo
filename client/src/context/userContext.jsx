@@ -10,7 +10,6 @@ export function UserProvider({ children }) {
     const [currentUser, setCurrentUser] = useState({});
     const [error, setError] = useState('');
     const darkTheme = useDarkMode();
-    // console.log(darkTheme.data)
     useEffect(() => {
         if (token) {
             setCurrentUser({ userName: decodeJwt(token).username, id: decodeJwt(token).id })
@@ -35,7 +34,7 @@ export function UserProvider({ children }) {
         queryCLient.invalidateQueries(['todos'])
         queryCLient.invalidateQueries(['archivedTodos'])
     }
-    const r = { token, currentUser, setToken, logout, error, setError }
+    const r = { token, currentUser, setToken, logout, error, setError, darkTheme }
     return <UserContext.Provider value={r}>
         {children}
     </UserContext.Provider>;

@@ -1,0 +1,20 @@
+.lightMode {
+    background-color: #dee6f1;
+    color: #252728;
+}
+
+.darkMode {
+    background-color: #252728;
+    color: #dee6f1;
+}
+
+button.lightMode {
+    background-color: #252728;
+    color: #dee6f1;
+
+}
+
+button.darkMode {
+    background-color: #dee6f1;
+    color: #252728;
+}

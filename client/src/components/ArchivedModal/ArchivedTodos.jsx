@@ -5,7 +5,7 @@ import { useArchivedToDos } from '../../hooks'
 import { ArchivedTodosButton } from './ArchivedTodosButton';
 import { ArchivedTodosModalContainer } from './ArchivedTodosModalContainer';
 
-export function ArchivedToDos() {
+export function ArchivedToDos({ darkTheme }) {
     const [show, setShow] = useState(false);
     const { data, status } = useArchivedToDos();
 
@@ -14,7 +14,7 @@ export function ArchivedToDos() {
     }
     return (
         <>
-            <ArchivedTodosButton toggle={toggleModal} />
+            <ArchivedTodosButton darkTheme={darkTheme} toggle={toggleModal} />
             <ArchivedTodosModalContainer show={show} setShow={setShow}>
                 <ArchivedTodosModalContent todos={data} status={status} />
             </ArchivedTodosModalContainer>

@@ -1,5 +1,17 @@
-  body {
+  #dashboard {
+    height: 100vh;
+
+  }
+
+  #dashboard.lightMode {
     background-color: #dee6f1;
+    color: #252728;
+  }
+
+  #dashboard.darkMode {
+    background-color: #252728;
+    color: #dee6f1;
+
   }
 
   #list {
