@@ -1,17 +1,18 @@
 import './styles/ArchivedTodos.css'
 
-export function ArchivedTodosModalContainer({ show, setShow, children }) {
+export function ArchivedTodosModalContainer({ darkTheme, show, setShow, children }) {
 
-
+    const styles = darkTheme ? 'bg-dark border border-white' : 'bg-light border border-dark'
+    const btnStyles = darkTheme ? 'btn-light' : 'btn-dark'
     if (!show) return;
 
     return (<>
 
-        <div className="modal-overlay" onClick={() => setShow(false)}>
-            <div className="archived-modal container" onClick={event => event.stopPropagation()}>
-                <div className="d-flex justify-content-between border-bottom">
-                    <h2 className='h4 m-0 px-4 py-3'>Archived ToDos</h2>
-                    <button className='btn btn-dark m-0 px-4 my-2' onClick={() => setShow(false)}>X</button>
+        <div className={`modal-overlay  `} onClick={() => setShow(false)}>
+            <div className={`archived-modal container ${styles} `} onClick={event => event.stopPropagation()}>
+                <div className={`${styles}  d-flex justify-content-between border-bottom rounded-pill my-2`}>
+                    <h2 className='h4 m-0 px-4 py-2 '>Archived ToDos</h2>
+                    <button className={`btn ${btnStyles} mx-3 my-2 px-3 rounded-pill`} onClick={() => setShow(false)}>X</button>
                 </div>
                 <ul className="list-group d-flex flex-direction-row archived-list">
                     {children}

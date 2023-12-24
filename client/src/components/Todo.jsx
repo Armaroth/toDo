@@ -1,12 +1,12 @@
 import { EditModal } from "./EditModal";
 import { useDeleteTodo, useNewTodo, useCheckBox, useArchiveTodo } from '../hooks';
 import './styles/Todo.css';
-export function Todo({ todo, isArchived }) {
+export function Todo({ darkTheme, todo, isArchived }) {
     const postMutation = useNewTodo();
     const deleteMutation = useDeleteTodo();
     const checkBoxMutation = useCheckBox();
     const archiveMutation = useArchiveTodo();
-
+    const styles = darkTheme ? 'bg-dark text-light border border-white' : 'bg-light text-dark  border border-dark';
     async function restoreTodo(description) {
         postMutation.mutate(description);
     };
@@ -29,8 +29,8 @@ export function Todo({ todo, isArchived }) {
 
     return (
         <>
-            <li className="list-group-item d-flex align-items-center justify-content-between my-1 px-2 border border-secondary" id={`todo${todo.todo_id}`} >
-                <p className='h6 px-1'>
+            <li className={`${styles} list-group-item d-flex align-items-center justify-content-between my-1 px-2 border border-secondary`} id={`todo${todo.todo_id}`} >
+                <p className={`h6 px-1`}>
                     {todo.description}
                 </p>
                 {isArchived ?

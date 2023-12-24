@@ -15,8 +15,8 @@ export function ArchivedToDos({ darkTheme }) {
     return (
         <>
             <ArchivedTodosButton darkTheme={darkTheme} toggle={toggleModal} />
-            <ArchivedTodosModalContainer show={show} setShow={setShow}>
-                <ArchivedTodosModalContent todos={data} status={status} />
+            <ArchivedTodosModalContainer darkTheme={darkTheme} show={show} setShow={setShow}>
+                <ArchivedTodosModalContent darkTheme={darkTheme} todos={data} status={status} />
             </ArchivedTodosModalContainer>
         </>
     )
