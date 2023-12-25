@@ -1,5 +1,5 @@
 #container {
-    max-width: 800px;
+    min-height: 100vh;
 }
 
 .form-control:focus {

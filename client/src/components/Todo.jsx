@@ -48,7 +48,7 @@ export function Todo({ darkTheme, todo, isArchived }) {
                     </div> :
                     <div className="align-self-end d-flex">
                         <div className="form-check my-2">
-                            <input className="form-check-input" id={`check-box${todo.todo_id}`} type="checkbox" checked={todo.completed}
+                            <input className={`form-check-input check `} id={`check-box${todo.todo_id}`} type="checkbox" checked={todo.completed}
                                 onChange={async () => await onCheckBoxChange(todo)} />
                         </div>
                         <EditModal toDo={todo} />

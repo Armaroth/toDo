@@ -1,6 +1,3 @@
-/* .custom-control-input:focus~.custom-control-label::before {
-
-} */
-.form-check-input:focus~.custom-control-label::before {
+.check:focus {
     box-shadow: none !important;
 }

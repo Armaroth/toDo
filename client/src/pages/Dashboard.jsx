@@ -6,13 +6,13 @@ import { useContext } from "react";
 import { UserContext } from "../context/userContext";
 export function Dashboard() {
     const { darkTheme } = useContext(UserContext);
-    const darkModeClass = darkTheme.data ? 'darkMode' : 'lightMode';
+    const darkModeClass = darkTheme.data ? 'bg-dark' : 'bg-light';
     return (
         <div id={`dashboard`} className={`${darkModeClass}`} >
             <TopBar darkTheme={darkTheme.data} />
             <div id="list" className="container">
-                <CreateTodos />
-                <TodoList />
+                <CreateTodos darkTheme={darkTheme.data} />
+                <TodoList darkTheme={darkTheme.data} />
             </div>
         </div>
     )

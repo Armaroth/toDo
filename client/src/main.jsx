@@ -4,6 +4,7 @@ import App from './App.jsx'
 import { AppProviders } from './providers.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AppProviders>
+
     <App />
   </AppProviders>
 );

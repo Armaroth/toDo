@@ -8,21 +8,25 @@ import { UserContext } from "./context/userContext"
 
 function App() {
 
-  const { token } = useContext(UserContext);
+  const { token, darkTheme } = useContext(UserContext);
+  const body = darkTheme ? 'bg-dark' : 'bg-light'
+
   return (
     <>
+      <div className={`${body}`}>
+        <BrowserRouter>
+          <Routes>
 
-      <BrowserRouter>
-        <Routes>
+            <Route path="/login" element={!token ? <Login /> : <Dashboard />} />
 
-          <Route path="/login" element={!token ? <Login /> : <Dashboard />} />
+            <Route path="/register" element={!token ? <Register /> : <Dashboard />} />
 
-          <Route path="/register" element={!token ? <Register /> : <Dashboard />} />
+            <Route path="/" element={token ? <Dashboard /> : <Login />} />
 
-          <Route path="/" element={token ? <Dashboard /> : <Login />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
 
-        </Routes>
-      </BrowserRouter>
     </>
   )
 }

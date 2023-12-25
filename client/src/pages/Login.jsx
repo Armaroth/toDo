@@ -5,6 +5,8 @@ import './styles/login.css'
 import { useLogin } from "../hooks";
 
 export function Login() {
+    const { darkTheme } = useContext(UserContext);
+    const styles = darkTheme.data ? 'bg-dark text-white' : 'bg-light';
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { error, setError } = useContext(UserContext);
@@ -21,11 +23,11 @@ export function Login() {
         mutation.mutate({ email, password });
     }
     return (
-        <>
-            <div id="container" className="container justify-content-center mt-5 text-center">
+        <><div className={`${styles}`}>
+            <div id="container" className={`container justify-content-center text-center ${styles} `}>
                 <form className="form" onSubmit={handleSubmit}>
                     <div>
-                        <h1>Login!</h1>
+                        <h1 className="pt-4">Login!</h1>
                         <input required className="form-control my-4" type="text" autoComplete="on"
                             name="email" placeholder="e-mail" id="email" value={email} onChange={e => setEmail(e.target.value)} />
                     </div>
@@ -45,6 +47,7 @@ export function Login() {
                     here.
                 </h2>
             </div>
+        </div>
 
         </>
     )
