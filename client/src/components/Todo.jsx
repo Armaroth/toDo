@@ -1,6 +1,7 @@
 import { EditModal } from "./EditModal";
 import { useDeleteTodo, useNewTodo, useCheckBox, useArchiveTodo } from '../hooks';
 import './styles/Todo.css';
+import PropTypes from 'prop-types';
 export function Todo({ darkTheme, todo, isArchived }) {
     const postMutation = useNewTodo();
     const deleteMutation = useDeleteTodo();
@@ -9,28 +10,28 @@ export function Todo({ darkTheme, todo, isArchived }) {
     const styles = darkTheme ? 'bg-dark text-light border border-white' : 'bg-light text-dark  border border-dark';
     async function restoreTodo(description) {
         postMutation.mutate(description);
-    };
+    }
     async function deleteTodo(id, table) {
         await deleteMutation.mutateAsync({ id, table })
-    };
+    }
     async function postTodo(id) {
         await archiveMutation.mutateAsync(id)
-    };
+    }
     async function onCheckBoxChange(toDo) {
         checkBoxMutation.mutate({ toDo_id: toDo.todo_id, completed: toDo.completed });
-    };
+    }
     async function onClickArchive(id) {
         if (archiveMutation.status === 'pending' || deleteMutation.status === 'pending') return;
         const table = 'todos';
         await postTodo(id).then(() => {
             deleteTodo(id, table)
         })
-    };
+    }
 
     return (
         <>
             <li className={`${styles} list-group-item d-flex align-items-center justify-content-between my-1 px-2 border border-secondary`} id={`todo${todo.todo_id}`} >
-                <p className={`h6 px-1`}>
+                <p className={`h6 px-1  `}>
                     {todo.description}
                 </p>
                 {isArchived ?
@@ -48,8 +49,8 @@ export function Todo({ darkTheme, todo, isArchived }) {
                     </div> :
                     <div className="align-self-end d-flex">
                         <div className="form-check my-2">
-                            <input className={`form-check-input check `} id={`check-box${todo.todo_id}`} type="checkbox" checked={todo.completed}
-                                onChange={async () => await onCheckBoxChange(todo)} />
+                            <input className={`form-check-input check `} id={`check-box${todo.todo_id}`} type="checkbox"
+                                checked={todo.completed} onChange={async () => await onCheckBoxChange(todo)} />
                         </div>
                         <EditModal toDo={todo} />
                         {/* archive button */}
@@ -62,3 +63,9 @@ export function Todo({ darkTheme, todo, isArchived }) {
         </>
     )
 }
+Todo.propTypes = {
+    todo: PropTypes.object.isRequired
+}
+Todo.defaultProps = {
+    darkTheme: {}
+};

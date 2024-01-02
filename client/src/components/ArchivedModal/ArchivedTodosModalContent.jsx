@@ -2,6 +2,7 @@ import { useDeleteTodo, useNewTodo } from '../../hooks'
 import { useContext } from 'react';
 import { UserContext } from '../../context/userContext';
 import { Todo } from '../Todo';
+import { EmptyTodo } from '../EmptyTodo';
 export function ArchivedTodosModalContent({ darkTheme, todos, status }) {
     const styles = darkTheme ? 'bg-dark' : 'bg-light'
     const { currentUser } = useContext(UserContext);
@@ -16,13 +17,21 @@ export function ArchivedTodosModalContent({ darkTheme, todos, status }) {
         deleteMutation.mutate({ id, table })
 
     }
-    if (status === 'pending' || todos?.length && todos[0].user_id !== currentUser.id) return <li key={'loading'} className={`${styles} list-group-item d-flex justify-content-between my-1 px-2 border border-secondary`} >
-        <h2 className='h6'>Loading</h2>
-    </li>
+    if (status === 'pending' || todos?.length &&
+        todos[0]?.user_id !== currentUser.id) {
+        return (
+            <>
+                <div className="container mt-5 ">
+                    <ul className="list-group">
+                        <EmptyTodo darkTheme={darkTheme} message={'Loading...'} />
+                    </ul>
+                </div>
+            </>
+        )
+        // return <EmptyTodo darkTheme={darkTheme} message={'Loading...'} />
+    }
 
-    if (status === 'success' && !todos?.length) return <li key={'empty'} className={` ${styles} list-group-item d-flex justify-content-between my-1 px-2 border border-secondary`} >
-        <h2 className='h6' >List is empty</h2>
-    </li>
+    if (status === 'success' && !todos?.length) return <EmptyTodo darkTheme={darkTheme} message={'No archived toDos.'} />
 
     return todos.map(
         todo => (<>
