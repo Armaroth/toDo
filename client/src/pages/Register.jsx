@@ -12,6 +12,7 @@ export function Register() {
     const [username, setUsername] = useState('');
     const mutation = useRegister();
     const { error, setError } = useContext(UserContext);
+
     const patterns = {
         username: /^[a-z\d]{5,12}$/i,
         email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
@@ -22,13 +23,7 @@ export function Register() {
             setError(() => '')
         }
     }, [password, email, username])
-    function checkRegex(e) {
-        e.preventDefault();
-        console.log(email, patterns.email.test(email))
-        console.log(username, patterns.username.test(username))
-        console.log(password, patterns.password.test(password))
 
-    }
     async function handleSubmit(e) {
         e.preventDefault();
         mutation.mutate({ email, password, username });

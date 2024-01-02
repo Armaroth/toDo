@@ -28,15 +28,21 @@ export function ArchivedTodosModalContent({ darkTheme, todos, status }) {
                 </div>
             </>
         )
-        // return <EmptyTodo darkTheme={darkTheme} message={'Loading...'} />
     }
 
     if (status === 'success' && !todos?.length) return <EmptyTodo darkTheme={darkTheme} message={'No archived toDos.'} />
 
-    return todos.map(
-        todo => (<>
-            <Todo darkTheme={darkTheme} key={todo.todo_id} todo={todo} isArchived={true} />
+    return (
+        <>
+            <ul className="list-group">
+                {todos.map(
+                    todo => (
+                        <Todo darkTheme={darkTheme} key={todo.todo_id} todo={todo} isArchived={true} />
+                    )
+                )}
+
+            </ul>
         </>
-        )
+
     )
 }
