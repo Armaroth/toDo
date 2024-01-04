@@ -1,5 +1,4 @@
-import { useState, useRef, useContext } from "react";
-import './styles/TodoList.css'
+import { useState, useRef } from "react";
 import { useEditTodo } from "../hooks";
 export function EditModal({ toDo }) {
 

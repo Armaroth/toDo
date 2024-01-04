@@ -10,10 +10,9 @@ export async function fetchWithAuth(url, options = {}) {
         }
     }).then(r => {
         if (r.status === 401) {
-            const decoded = decodeJwt(token);
-            const exp = decoded.exp;
+            const { exp } = decodeJwt(token);
             if (token && (exp * 1000 <= Date.now())) {
-                refreshToken(url, options);
+                refreshToken(token, url, options);
             } else {
                 localStorage.removeItem('token');
                 window.location.href = window.origin + '/login'
@@ -23,8 +22,7 @@ export async function fetchWithAuth(url, options = {}) {
     });
 }
 
-function refreshToken(url, options) {
-    const token = localStorage.getItem('token');
+function refreshToken(token, url, options = {}) {
     const decoded = decodeJwt(token);
     const id = decoded.id;
     const response = fetch(`http://localhost:4000/auth/refresh`, {
