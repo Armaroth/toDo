@@ -1,4 +1,4 @@
-import { useDeleteTodo, useNewTodo, useArchiveTodo } from "./hooks";
+import { useDeleteTodo, useArchiveTodo } from "./hooks";
 
 async function deleteTodo(id, table) {
     const deleteTodo = useDeleteTodo();
