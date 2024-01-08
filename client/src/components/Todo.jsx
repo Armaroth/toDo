@@ -51,7 +51,7 @@ export function Todo({ darkTheme, todo, isArchived }) {
                         <input className={`form-check-input check `} id={`check-box${todo.todo_id}`} type="checkbox"
                             checked={todo.completed} onChange={async () => await onCheckBoxChange(todo)} />
                     </div>
-                    <EditModal toDo={todo} />
+                    <EditModal toDo={todo} darkTheme={darkTheme} />
                     {/* archive button */}
                     <button className="btn btn-danger d-inline-block ms-1 border-secondary"
                         onClick={async () => await onClickArchive(todo.todo_id)}>Archive

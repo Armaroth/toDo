@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useEditTodo } from "../hooks";
-export function EditModal({ toDo }) {
-
+export function EditModal({ toDo, darkTheme }) {
+    const classes = darkTheme ? 'bg-dark text-white' : 'bg-light'
     const [description, setDescription] = useState('');
     const inputRef = useRef();
     const editMutation = useEditTodo();
@@ -16,7 +16,6 @@ export function EditModal({ toDo }) {
             <button type="button" className="btn btn-warning d-inline-block border-secondary px-4" data-bs-toggle="modal"
                 data-bs-target={`#modal${toDo.todo_id}`}
                 onClick={() => {
-
                     setDescription(toDo.description);
                     inputRef.current.focus();
                 }}>
@@ -27,7 +26,7 @@ export function EditModal({ toDo }) {
             <div className="modal fade" id={`modal${toDo.todo_id}`} tabIndex="-1"
                 aria-labelledby="ModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
-                    <div className="modal-content">
+                    <div className={`modal-content ${classes}`}>
                         <div className="modal-header">
                             <h5 className="modal-title" id="ModalLabel">Edit toDo</h5>
                             <button type="button" className="btn-close" data-bs-dismiss="modal"
