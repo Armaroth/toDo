@@ -13,7 +13,11 @@ export function useArchiveTodo() {
                 },
                 body: JSON.stringify({ id }), credentials: 'include'
 
-            }).then(data => data.json());
+            }).then(data => {
+                if (data.ok) {
+                    return data.json()
+                }
+            });
         },
         onSuccess: async () => {
             await queryCLient.invalidateQueries({ queryKey: ['archivedTodos'] });

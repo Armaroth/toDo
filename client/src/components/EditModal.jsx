@@ -5,6 +5,7 @@ export function EditModal({ toDo, darkTheme }) {
     const [description, setDescription] = useState('');
     const inputRef = useRef();
     const editMutation = useEditTodo();
+    const styles = darkTheme ? 'bg-secondary text-white' : ''
     async function onClickEdit(description, id) {
         if (!description) return;
         editMutation.mutate({ description, id })
@@ -29,12 +30,12 @@ export function EditModal({ toDo, darkTheme }) {
                     <div className={`modal-content ${classes}`}>
                         <div className="modal-header">
                             <h5 className="modal-title" id="ModalLabel">Edit toDo</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal"
+                            <button type="button" className={`btn-close ${darkTheme && 'bg-light'}`} data-bs-dismiss="modal"
                                 aria-label="Close">
                             </button>
                         </div>
                         <div className="modal-body">
-                            <input ref={inputRef} className="form-control shadow-none border border-secondary p-1 m-0" value={description}
+                            <input ref={inputRef} className={`form-control shadow-none border border-secondary p-1 m-0 ${styles}`} value={description}
                                 onChange={e => setDescription(e.target.value)} type="text" />
                         </div>
                         <div className="modal-footer">
@@ -47,7 +48,7 @@ export function EditModal({ toDo, darkTheme }) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
 
         </>
     )

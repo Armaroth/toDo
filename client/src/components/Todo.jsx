@@ -8,6 +8,7 @@ export function Todo({ darkTheme, todo, isArchived }) {
     const checkBoxMutation = useCheckBox();
     const archiveMutation = useArchiveTodo();
     const styles = darkTheme ? 'bg-dark text-light border border-white' : 'bg-light text-dark  border border-dark';
+    const checkBoxStyles = darkTheme ? 'bg-secondary border-white' : 'border-secondary'
     async function restoreTodo(description) {
         postMutation.mutate(description);
     }
@@ -48,7 +49,7 @@ export function Todo({ darkTheme, todo, isArchived }) {
                 </div> :
                 <div className="align-self-end d-flex">
                     <div className="form-check my-2">
-                        <input className={`form-check-input check `} id={`check-box${todo.todo_id}`} type="checkbox"
+                        <input className={`form-check-input check ${checkBoxStyles}`} id={`check-box${todo.todo_id}`} type="checkbox"
                             checked={todo.completed} onChange={async () => await onCheckBoxChange(todo)} />
                     </div>
                     <EditModal toDo={todo} darkTheme={darkTheme} />

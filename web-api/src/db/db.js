@@ -11,20 +11,46 @@ const pool = new Pool({
     port: process.env.DB_PORT,
     database: process.env.DB_DATABASE
 })
+
+async function getDbClient() {
+    const client = await pool.connect();
+    if (!client) throw new Error('client is not connected to db');
+    return client;
+}
+async function beginTransaction() {
+    const client = await getDbClient();
+    try {
+        await client.query('BEGIN');
+        return client;
+    } catch (e) {
+        await client.query('ROLLBACK');
+    }
+}
+
+async function commitTransaction(client) {
+    try {
+        const res = await client.query('COMMIT');
+        return { data: res };
+    } catch (e) {
+        await client.query('ROLLBACK');
+        return { error: e };
+    } finally {
+        client.release();
+    }
+}
+
 async function seedDatabase() {
+    const client = await beginTransaction();
     const filenames = readDirSync(__dirname + '/migrations', 'utf-8');
     if (!filenames) throw new Error('there is no init db file');
-    await runQuery('BEGIN');
     for (const filename of filenames) {
         const query = readFileSync(`${__dirname}/migrations/${filename}`, 'utf-8')
-        await runQuery(query);
+        await client.query(query);
     }
-    try {
-        await runQuery('COMMIT');
-        console.log('database seeded');
-    } catch (error) {
-        await runQuery('ROLLBACK');
-        console.log('problem with database seeding');
+    const res = commitTransaction(client);
+    if (res.error) {
+        console.error(res.error);
+        throw new Error('failed to seed database');
     }
 }
 async function runQuery(query, args) {

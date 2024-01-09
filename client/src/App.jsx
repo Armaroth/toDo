@@ -4,9 +4,8 @@ import { Dashboard } from "./pages/Dashboard"
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useContext } from "react"
 import { UserContext } from "./context/userContext"
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap/dist/js/bootstrap.min.js'
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
 function App() {
 
   const { token, darkTheme } = useContext(UserContext);
@@ -32,4 +31,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
